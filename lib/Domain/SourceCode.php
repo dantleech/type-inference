@@ -15,4 +15,9 @@ final class SourceCode
     {
         return new self($source);
     }
+
+    public function __toString()
+    {
+        return $this->source;
+    }
 }

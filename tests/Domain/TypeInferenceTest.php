@@ -1,6 +1,6 @@
 <?php
 
-namespace DTL\TypeInference\Tests\Unit;
+namespace DTL\TypeInference\Tests\Domain;
 
 use PHPUnit\Framework\TestCase;
 use DTL\TypeInference\Domain\TypeInferer;
