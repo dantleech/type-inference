@@ -63,4 +63,24 @@ EOT
 
         $this->assertEquals(InferredType::fromString('Foobar\Barfoo\ClassName'), $type);
     }
+
+    /**
+     * It should return the fully qualified name of a with an imported name.
+     */
+    public function testClassNameForImportedClass()
+    {
+        $type = $this->inferrer->inferTypeAtOffset(SourceCode::fromString(<<<'EOT'
+<?php
+
+namespace Foobar\Barfoo;
+
+use BarBar\ClassName();
+
+$foo = new ClassName();
+
+EOT
+        ), Offset::fromInt(70));
+
+        $this->assertEquals(InferredType::fromString('BarBar\ClassName'), $type);
+    }
 }

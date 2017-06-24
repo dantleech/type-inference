@@ -24,6 +24,13 @@ class TolerantTypeInferer implements TypeInferer
         $node = $node->getDescendantNodeAtPosition($offset->asInt());
 
         if ($node instanceof QualifiedName) {
+            $imports = $node->getImportTablesForCurrentScope();
+            $classImports = $imports[0];
+
+            if (isset($classImports[$node->getText()])) {
+                return InferredType::fromString((string) $classImports[$node->getText()]);
+            }
+
             if ($namespaceDefinition = $node->getNamespaceDefinition()) {
                 return InferredType::fromParts([$namespaceDefinition->name->getText(), $node->getText()]);
             }
