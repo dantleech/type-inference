@@ -5,6 +5,7 @@ namespace DTL\TypeInference;
 use DTL\TypeInference\Domain\TypeInferer;
 use DTL\TypeInference\Domain\SourceCode;
 use DTL\TypeInference\Domain\Offset;
+use DTL\TypeInference\Adapter\TolerantTypeInferer;
 
 final class TypeInference
 {
@@ -12,7 +13,6 @@ final class TypeInference
 
     public function __construct(TypeInferer $inferer = null)
     {
-        $this->inferer = $inferer ?: new TolerantTypeInferer();
         $this->inferer = $inferer ?: new TolerantTypeInferer();
     }
 

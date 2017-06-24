@@ -25,4 +25,9 @@ class InferredType
     {
         return new self();
     }
+
+    public function __toString()
+    {
+        return $this->type;
+    }
 }
