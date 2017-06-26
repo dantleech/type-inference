@@ -83,4 +83,24 @@ EOT
 
         $this->assertEquals(InferredType::fromString('BarBar\ClassName'), $type);
     }
+
+    /**
+     * It should return the fully qualified name of a use definition
+     */
+    public function testClassNameForUsed()
+    {
+        $type = $this->inferrer->inferTypeAtOffset(SourceCode::fromString(<<<'EOT'
+<?php
+
+namespace Foobar\Barfoo;
+
+use BarBar\ClassName();
+
+$foo = new ClassName();
+
+EOT
+        ), Offset::fromInt(46));
+
+        $this->assertEquals(InferredType::fromString('BarBar\ClassName'), $type);
+    }
 }

@@ -8,6 +8,7 @@ use DTL\TypeInference\Domain\SourceCode;
 use DTL\TypeInference\Domain\Offset;
 use DTL\TypeInference\Domain\InferredType;
 use Microsoft\PhpParser\Node\QualifiedName;
+use Microsoft\PhpParser\Node\NamespaceUseClause;
 
 class TolerantTypeInferer implements TypeInferer
 {
@@ -29,6 +30,10 @@ class TolerantTypeInferer implements TypeInferer
 
             if (isset($classImports[$node->getText()])) {
                 return InferredType::fromString((string) $classImports[$node->getText()]);
+            }
+
+            if ($node->getParent() instanceof NamespaceUseClause) {
+                return InferredType::fromString((string) $node->getText());
             }
 
             if ($namespaceDefinition = $node->getNamespaceDefinition()) {
