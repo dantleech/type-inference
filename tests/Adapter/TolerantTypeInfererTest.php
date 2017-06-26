@@ -86,6 +86,9 @@ EOT
 
     /**
      * It should return the fully qualified name of a use definition
+     *
+     * NOTE: Not sure if we should really do this as the use statement is just an imported namespace and
+     *       does not mean that the class exists.
      */
     public function testClassNameForUsed()
     {
