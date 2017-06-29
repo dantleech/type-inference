@@ -2,14 +2,14 @@
 
 namespace DTL\TypeInference\Tests\Adapter;
 
-use DTL\TypeInference\Adapter\TolerantTypeInferer;
+use DTL\TypeInference\Adapter\TolerantParser\TolerantTypeInferer;
 use DTL\TypeInference\Domain\Offset;
 use DTL\TypeInference\Domain\InferredType;
 use PHPUnit\Framework\TestCase;
 use DTL\TypeInference\Domain\SourceCode;
 use DTL\TypeInference\Domain\TypeInferer;
 
-abstract class AdapterTestCase extends TestCase
+abstract class TypeInferrerTestCase extends TestCase
 {
     abstract protected function inferrer(): TypeInferer;
 

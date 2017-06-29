@@ -5,7 +5,7 @@ namespace DTL\TypeInference;
 use DTL\TypeInference\Domain\TypeInferer;
 use DTL\TypeInference\Domain\SourceCode;
 use DTL\TypeInference\Domain\Offset;
-use DTL\TypeInference\Adapter\TolerantTypeInferer;
+use DTL\TypeInference\Adapter\TolerantParser\TolerantTypeInferer;
 
 final class TypeInference
 {

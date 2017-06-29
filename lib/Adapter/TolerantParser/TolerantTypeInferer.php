@@ -1,6 +1,6 @@
 <?php
 
-namespace DTL\TypeInference\Adapter;
+namespace DTL\TypeInference\Adapter\TolerantParser;
 
 use Microsoft\PhpParser\Parser;
 use DTL\TypeInference\Domain\TypeInferer;
@@ -14,6 +14,7 @@ use Microsoft\PhpParser\Node\Parameter;
 use Microsoft\PhpParser\Node\Expression\Variable;
 use Microsoft\PhpParser\Node\Statement\FunctionDeclaration;
 use Microsoft\PhpParser\Node\MethodDeclaration;
+use DTL\TypeInference\Adapter\TolerantParser\FrameBuilder;
 
 class TolerantTypeInferer implements TypeInferer
 {

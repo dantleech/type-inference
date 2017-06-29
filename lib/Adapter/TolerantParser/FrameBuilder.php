@@ -1,6 +1,6 @@
 <?php
 
-namespace DTL\TypeInference\Adapter;
+namespace DTL\TypeInference\Adapter\TolerantParser;
 
 use Microsoft\PhpParser\Node;
 use DTL\TypeInference\Domain\Frame;
