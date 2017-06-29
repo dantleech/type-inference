@@ -28,6 +28,6 @@ class InferredType
 
     public function __toString()
     {
-        return $this->type;
+        return $this->type ?: '<unknown>';
     }
 }

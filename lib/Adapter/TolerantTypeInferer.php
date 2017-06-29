@@ -67,8 +67,10 @@ class TolerantTypeInferer implements TypeInferer
 
     private function resolveVariable(Variable $node)
     {
-        $frame = (new FrameBuilder($node))->build();
+        $frame = (new FrameBuilder())->buildUntil($node);
 
-        return $frame->getVariable($node->getText());
+        $variable = $frame->get($node->getText());
+
+        return $variable ? $variable->type() : InferredType::unknown();
     }
 }
