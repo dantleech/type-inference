@@ -2,6 +2,8 @@
 
 namespace DTL\TypeInference\Domain;
 
+use DTL\TypeInference\Domain\InferredType;
+
 final class Frame
 {
     private $variables;
@@ -18,5 +20,10 @@ final class Frame
         }
 
         return $this->variables[$name];
+    }
+
+    public function getOrUnknown(string $name): Variable
+    {
+        return $this->get($name) ?: InferredType::unknown();
     }
 }

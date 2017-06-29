@@ -9,6 +9,9 @@ use Microsoft\PhpParser\Node\Statement\FunctionDeclaration;
 use DTL\TypeInference\Domain\Variable;
 use DTL\TypeInference\Domain\InferredType;
 use Microsoft\PhpParser\Node\Parameter;
+use Microsoft\PhpParser\Node\Expression\AssignmentExpression;
+use Microsoft\PhpParser\Node\Expression\Variable as ExprVariable;
+use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 
 final class FrameBuilder
 {
@@ -37,10 +40,30 @@ final class FrameBuilder
         if ($node instanceof MethodDeclaration) {
             $this->processMethodDeclaration($frame, $node);
         }
+
+        if ($node instanceof AssignmentExpression) {
+            $frame->set(Variable::fromNameAndType(
+                $node->leftOperand->getText(),
+                $this->resolveType($frame, $node->rightOperand)
+            ));
+        }
+
+        foreach ($node->getChildNodes() as $childNode) {
+            $this->walk($frame, $childNode);
+        }
     }
 
     private function processMethodDeclaration(Frame $frame, MethodDeclaration $node)
     {
+        $namespace = $node->getNamespaceDefinition();
+        $class = $node->getFirstAncestor(ClassDeclaration::class);
+        $frame->set(Variable::fromNameAndType(
+            '$this',
+            InferredType::fromString(
+                $namespace->name->getText() . '\\' . $class->name->getText($node->getFileContents())
+            )
+        ));
+
         foreach ($node->parameters->children as $parameter) {
             if (false === $parameter instanceof Parameter) {
                 continue;
@@ -70,5 +93,12 @@ final class FrameBuilder
         }
 
         return InferredType::fromString($node->getText());
+    }
+
+    private function resolveType(Frame $frame, Node $node)
+    {
+        if ($node instanceof ExprVariable) {
+            return $frame->getOrUnknown($node->getText())->type();
+        }
     }
 }

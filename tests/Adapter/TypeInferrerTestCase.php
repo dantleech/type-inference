@@ -142,6 +142,45 @@ class Foobar
 EOT
                 , 127, InferredType::fromString('Foobar\Barfoo\World')
             ],
+            'It returns types for reassigned variables' => [
+                <<<'EOT'
+<?php
+
+namespace Foobar\Barfoo;
+
+use Acme\Factory;
+
+class Foobar
+{
+    public function hello(World $world)
+    {
+        $foobar = $world;
+        $foobar;
+    }
+}
+
+EOT
+                , 154, InferredType::fromString('Foobar\Barfoo\World')
+            ],
+            'It returns type for $this' => [
+                <<<'EOT'
+<?php
+
+namespace Foobar\Barfoo;
+
+use Acme\Factory;
+
+class Foobar
+{
+    public function hello(World $world)
+    {
+        $this;
+    }
+}
+
+EOT
+                , 126, InferredType::fromString('Foobar\Barfoo\Foobar')
+            ],
         ];
 
     }
