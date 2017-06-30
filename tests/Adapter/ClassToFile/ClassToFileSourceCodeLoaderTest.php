@@ -3,25 +3,25 @@
 namespace DTL\TypeInference\Tests\Adapter\ClassToFile;
 
 use PHPUnit\Framework\TestCase;
-use DTL\TypeInference\Adapter\ClassToFile\ClassToFileSourcePathResolver;
+use DTL\TypeInference\Adapter\ClassToFile\ClassToFileSourceCodeLoader;
 use DTL\ClassFileConverter\Adapter\Composer\ComposerClassToFile;
 use DTL\ClassFileConverter\ClassToFileConverter;
 use DTL\TypeInference\Domain\InferredType;
 
-class ClassToFileSourcePathResolverTest extends TestCase
+class ClassToFileSourceCodeLoaderTest extends TestCase
 {
     /**
      * @runTestInSeparateProcess
      */
-    public function testClassToFile()
+    public function testLoadSource()
     {
         $autoloader = require(__DIR__ . '/../../../vendor/autoload.php');
         $converter = ClassToFileConverter::fromComposerAutoloader($autoloader);
-        $resolver = new ClassToFileSourcePathResolver($converter);
+        $resolver = new ClassToFileSourceCodeLoader($converter);
 
         $this->assertEquals(
-            __FILE__,
-            (string) $resolver->resolvePathFor(
+            file_get_contents(__FILE__),
+            (string) $resolver->loadSourceFor(
                 InferredType::fromString(__CLASS__)
             )
         );
