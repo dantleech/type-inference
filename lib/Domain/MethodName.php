@@ -15,4 +15,9 @@ class MethodName
     {
         return new self($name);
     }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 }
