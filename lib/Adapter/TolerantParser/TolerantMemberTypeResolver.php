@@ -8,8 +8,11 @@ use DTL\TypeInference\Domain\SourceCodeLoader;
 use DTL\TypeInference\Domain\MethodName;
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Node\MethodDeclaration;
+use DTL\TypeInference\Domain\MemberTypeResolver;
+use DTL\TypeInference\Domain\PropertyName;
+use DTL\TypeInference\Domain\SourceCodeNotFound;
 
-final class TolerantMemberTypeResolver
+final class TolerantMemberTypeResolver implements MemberTypeResolver
 {
     private $parser;
     private $sourceLoader;
@@ -22,13 +25,13 @@ final class TolerantMemberTypeResolver
 
     public function methodType(InferredType $type, MethodName $name): InferredType
     {
-        $sourceCode = $this->sourceLoader->loadSourceFor($type);
-
         try {
-            $node = $this->parser->parseSourceFile((string) $sourceCode);
-        } catch (SourceNotFound $e) {
+            $sourceCode = $this->sourceLoader->loadSourceFor($type);
+        } catch (SourceCodeNotFound $e) {
             return InferredType::unknown();
         }
+
+        $node = $this->parser->parseSourceFile((string) $sourceCode);
 
         foreach ($node->getDescendantNodes() as $descendant) {
             if ($descendant instanceof ClassDeclaration) {
@@ -51,13 +54,11 @@ final class TolerantMemberTypeResolver
             }
 
         }
+
+        return InferredType::unknown();
     }
 
     public function propertyType(InferredType $type, PropertyName $name): InferredType
-    {
-    }
-
-    private function getSourceNode(InferredType $type)
     {
     }
 }
