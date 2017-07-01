@@ -20,6 +20,9 @@ use Microsoft\PhpParser\Node\Expression\MemberAccessExpression;
 use DTL\TypeInference\Domain\MethodName;
 use DTL\TypeInference\Adapter\Dummy\DummyMethodTypeResolver;
 use Microsoft\PhpParser\Node\Expression\CallExpression;
+use Microsoft\PhpParser\Node\Expression;
+use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
+use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
 
 class TolerantTypeInferer implements TypeInferer
 {
@@ -56,25 +59,31 @@ class TolerantTypeInferer implements TypeInferer
             return $this->resolveVariable($node);
         }
 
-        if ($node instanceof MemberAccessExpression) {
+        if ($node instanceof MemberAccessExpression || $node instanceof CallExpression) {
             return $this->resolveMemberAccess($node);
         }
 
-        return InferredType::unknown();
+        if ($node instanceof ClassDeclaration || $node instanceof InterfaceDeclaration) {
+            return InferredType::fromString($node->getNamespacedName());
+        }
 
+        return InferredType::unknown();
     }
 
 
     private function resolveVariable(Variable $node)
     {
         $frame = (new FrameBuilder())->buildUntil($node);
+        $assignedNode = $frame->get($node->getText());
 
-        $variable = $frame->get($node->getText());
+        if (null === $assignedNode) {
+            return InferredType::unknown();
+        }
 
-        return $variable ? $variable->type() : InferredType::unknown();
+        return $this->resolveNode($assignedNode);
     }
 
-    private function resolveMemberAccess(MemberAccessExpression $node, $list = [])
+    private function resolveMemberAccess(Expression $node, $list = [])
     {
         $ancestors = [  ];
         while ($node instanceof MemberAccessExpression || $node instanceof CallExpression) {
