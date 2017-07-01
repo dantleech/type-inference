@@ -8,9 +8,23 @@ use DTL\TypeInference\Domain\InferredType;
 use PHPUnit\Framework\TestCase;
 use DTL\TypeInference\Domain\SourceCode;
 use DTL\TypeInference\Domain\TypeInferer;
+use DTL\TypeInference\Domain\SourceCodeLoader;
+use Prophecy\Argument;
 
 abstract class TypeInferrerTestCase extends TestCase
 {
+    private $sourceCodeLoader;
+
+    public function setUp()
+    {
+        $this->sourceCodeLoader = $this->prophesize(SourceCodeLoader::class);
+    }
+
+    protected function sourceCodeLoader()
+    {
+        return $this->sourceCodeLoader->reveal();
+    }
+
     abstract protected function inferrer(): TypeInferer;
 
     /**
@@ -18,6 +32,7 @@ abstract class TypeInferrerTestCase extends TestCase
      */
     public function testAdapter(string $source, int $offset, InferredType $expectedType)
     {
+        $this->sourceCodeLoader->loadSourceFor(Argument::any())->willReturn(SourceCode::fromString($source));
         $type = $this->inferrer()->inferTypeAtOffset(SourceCode::fromString($source), Offset::fromInt($offset));
         $this->assertEquals($expectedType, $type);
     }
@@ -180,6 +195,31 @@ class Foobar
 
 EOT
                 , 126, InferredType::fromString('Foobar\Barfoo\Foobar')
+            ],
+            'It returns type for a method' => [
+                <<<'EOT'
+<?php
+
+namespace Foobar\Barfoo;
+
+use Acme\Factory;
+use Things\Response;
+
+class Barfoo
+{
+    public function callMe(): Response
+}
+
+class Foobar
+{
+    public function hello(Barfoo $world)
+    {
+        $world->callMe();
+    }
+}
+
+EOT
+                , 211, InferredType::fromString('Things\Response')
             ],
         ];
 

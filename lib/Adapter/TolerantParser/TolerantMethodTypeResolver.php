@@ -58,8 +58,4 @@ final class TolerantMethodTypeResolver implements MethodTypeResolver
 
         return InferredType::unknown();
     }
-
-    public function propertyType(InferredType $type, PropertyName $name): InferredType
-    {
-    }
 }
