@@ -39,6 +39,15 @@ final class TolerantMemberTypeResolver implements MemberTypeResolver
         return $this->memberType($type, (string) $name, [
             'node_class' => MethodDeclaration::class,
             'resolver' => function (MethodDeclaration $node) {
+                if (null === $node->returnType) {
+                    $docblock = $this->docblockParser->parse($node->getLeadingCommentAndWhitespaceText());
+
+                    foreach ($docblock->tagsNamed('return') as $return) {
+                        return InferredType::fromString($this->fqnResolver->resolveQualifiedName($node, $return->value()));
+                    }
+
+                    return InferredType::unknown();
+                }
                 return InferredType::fromString($node->returnType->getResolvedName());
             },
             'get_name' => function ($node) {

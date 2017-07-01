@@ -49,6 +49,33 @@ EOT
     }
 
     /**
+     * It resolves the type of a method with a documented return type
+     */
+    public function testResolveMethodTypeDocumented()
+    {
+        $source = SourceCode::fromString(<<<'EOT'
+<?php
+
+class Type1
+{
+    /**
+     * @return Type2
+     */
+    public function type2()
+    {
+    }
+}
+EOT
+        );
+        $type = InferredType::fromString('Type1');
+        $this->loader->loadSourceFor($type)->willReturn($source);
+
+        $resolvedType = $this->resolver->methodType($type, MethodName::fromString('type2'));
+
+        $this->assertEquals('Type2', (string) $resolvedType);
+    }
+
+    /**
      * It returns unknown if the source is not found.
      */
     public function testSourceNotFound()

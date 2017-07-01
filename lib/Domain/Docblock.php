@@ -4,7 +4,7 @@ namespace DTL\TypeInference\Domain;
 
 class Docblock
 {
-    private $tags;
+    private $tags = [];
 
     private function __construct(array $tags)
     {

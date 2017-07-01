@@ -6,13 +6,16 @@ final class DocblockParser
 {
     const TAGS = [
         'var',
+        'return',
     ];
 
     public function parse(string $text): Docblock
     {
         $tags = [];
         foreach (self::TAGS as $tag) {
-            if (false === preg_match(sprintf('{@%s (?<value>[\w\\\]+)}', $tag), $text, $matches)) {
+            preg_match(sprintf('{@%s (?<value>[\w\\\]+)}', $tag), $text, $matches);
+
+            if (!$matches) {
                 continue;
             }
 
