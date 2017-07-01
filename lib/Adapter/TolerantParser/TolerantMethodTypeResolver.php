@@ -11,8 +11,9 @@ use Microsoft\PhpParser\Node\MethodDeclaration;
 use DTL\TypeInference\Domain\MemberTypeResolver;
 use DTL\TypeInference\Domain\PropertyName;
 use DTL\TypeInference\Domain\SourceCodeNotFound;
+use DTL\TypeInference\Domain\MethodTypeResolver;
 
-final class TolerantMemberTypeResolver implements MemberTypeResolver
+final class TolerantMethodTypeResolver implements MethodTypeResolver
 {
     private $parser;
     private $sourceLoader;

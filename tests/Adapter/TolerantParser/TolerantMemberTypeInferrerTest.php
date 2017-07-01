@@ -6,7 +6,7 @@ use DTL\TypeInference\Domain\TypeInferer;
 use DTL\TypeInference\Adapter\TolerantParser\TolerantTypeInferer;
 use DTL\TypeInference\Tests\Adapter\TypeInferrerTestCase;
 use PHPUnit\Framework\TestCase;
-use DTL\TypeInference\Adapter\TolerantParser\TolerantMemberTypeResolver;
+use DTL\TypeInference\Adapter\TolerantParser\TolerantMethodTypeResolver;
 use DTL\TypeInference\Domain\SourceCodeLoader;
 use DTL\TypeInference\Domain\InferredType;
 use DTL\TypeInference\Domain\SourceCode;
@@ -21,7 +21,7 @@ class TolerantMemberTypeInfererTest extends TestCase
     public function setUp()
     {
         $this->loader = $this->prophesize(SourceCodeLoader::class);
-        $this->resolver = new TolerantMemberTypeResolver($this->loader->reveal());
+        $this->resolver = new TolerantMethodTypeResolver($this->loader->reveal());
     }
 
     /**
