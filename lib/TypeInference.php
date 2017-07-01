@@ -11,6 +11,9 @@ use DTL\TypeInference\Domain\SourceCodeLoader;
 
 final class TypeInference
 {
+    /**
+     * @var TypeInferer
+     */
     private $inferer;
 
     public function __construct(TypeInferer $inferer = null)

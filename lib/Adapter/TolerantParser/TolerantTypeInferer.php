@@ -73,22 +73,47 @@ class TolerantTypeInferer implements TypeInferer
         return $variable ? $variable->type() : InferredType::unknown();
     }
 
-    private function resolveMemberAccess(MemberAccessExpression $node)
+    private function resolveMemberAccess(MemberAccessExpression $node, $list = [])
     {
-        $baseType = $this->resolveNode($node->dereferencableExpression);
-
-        if (InferredType::unknown() === $baseType) {
-            return InferredType::unknown();
+        $ancestors = [ $node ];
+        while ($node instanceof MemberAccessExpression) {
+            $node = $node->dereferencableExpression;
+            $ancestors[] = $node;
         }
 
+        $ancestors = array_reverse($ancestors);
+
+        $context = null;
+        foreach ($ancestors as $ancestor) {
+            if ($context === null) {
+                $context = $this->resolveNode($ancestor);
+
+                if (InferredType::unknown() == $context) {
+                    return InferredType::unknown();
+                }
+
+                continue;
+            }
+
+            $type = $this->resolveMemberType($context, $ancestor);
+            $context = $type;
+        }
+
+        return $type;
+    }
+
+    private function resolveMemberType(InferredType $context, $node)
+    {
         $memberName = $node->memberName->getText($node->getFileContents());
 
-        $type = $this->typeResolver->methodType($baseType, MethodName::fromString($memberName));
+        $type = $this->typeResolver->methodType($context, MethodName::fromString($memberName));
 
         if (InferredType::unknown() != $type) {
             return $type;
         }
 
-        return $this->typeResolver->propertyType($baseType, MethodName::fromString($memberName));
+        $type = $this->typeResolver->propertyType($context, MethodName::fromString($memberName));
+
+        return $type;
     }
 }

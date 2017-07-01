@@ -13,6 +13,8 @@ use DTL\TypeInference\Domain\SourceCodeNotFound;
 use DTL\TypeInference\Domain\MemberTypeResolver;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
 use DTL\TypeInference\Domain\DocblockParser;
+use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
+use Microsoft\PhpParser\NamespacedNameInterface;
 
 final class TolerantMemberTypeResolver implements MemberTypeResolver
 {
@@ -89,7 +91,10 @@ final class TolerantMemberTypeResolver implements MemberTypeResolver
         $node = $this->parser->parseSourceFile((string) $sourceCode);
 
         foreach ($node->getDescendantNodes() as $descendant) {
-            if ($descendant instanceof ClassDeclaration) {
+            if (
+                $descendant instanceof ClassDeclaration ||
+                $descendant instanceof InterfaceDeclaration
+            ) {
                 if ((string) $descendant->getNamespacedName() == (string) $type) {
                     return $this->memberTypeFromClassDeclaration($name, $descendant, $strategy);
                 }
@@ -99,7 +104,7 @@ final class TolerantMemberTypeResolver implements MemberTypeResolver
         return InferredType::unknown();
     }
 
-    private function memberTypeFromClassDeclaration(string $name, ClassDeclaration $node, array $strategy)
+    private function memberTypeFromClassDeclaration(string $name, NamespacedNameInterface $node, array $strategy)
     {
         foreach ($node->getDescendantNodes() as $descendant) {
             if (get_class($descendant) == $strategy['node_class']) {
