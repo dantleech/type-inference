@@ -18,16 +18,17 @@ use DTL\TypeInference\Adapter\TolerantParser\FrameBuilder;
 use DTL\TypeInference\Domain\MethodTypeResolver;
 use Microsoft\PhpParser\Node\Expression\MemberAccessExpression;
 use DTL\TypeInference\Domain\MethodName;
+use DTL\TypeInference\Adapter\Dummy\DummyMethodTypeResolver;
 
 class TolerantTypeInferer implements TypeInferer
 {
     private $parser;
     private $typeResolver;
 
-    public function __construct(Parser $parser = null, MethodTypeResolver $typeResolver)
+    public function __construct(Parser $parser = null, MethodTypeResolver $typeResolver = null)
     {
         $this->parser = $parser ?: new Parser();
-        $this->typeResolver = $typeResolver;
+        $this->typeResolver = $typeResolver ?: new DummyMethodTypeResolver();
     }
 
     public function inferTypeAtOffset(SourceCode $code, Offset $offset): InferredType
