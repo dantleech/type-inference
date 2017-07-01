@@ -15,7 +15,7 @@ use Microsoft\PhpParser\Node\Expression\Variable;
 use Microsoft\PhpParser\Node\Statement\FunctionDeclaration;
 use Microsoft\PhpParser\Node\MethodDeclaration;
 use DTL\TypeInference\Adapter\TolerantParser\FrameBuilder;
-use DTL\TypeInference\Domain\MethodTypeResolver;
+use DTL\TypeInference\Domain\MemberTypeResolver;
 use Microsoft\PhpParser\Node\Expression\MemberAccessExpression;
 use DTL\TypeInference\Domain\MethodName;
 use DTL\TypeInference\Adapter\Dummy\DummyMethodTypeResolver;
@@ -24,11 +24,13 @@ class TolerantTypeInferer implements TypeInferer
 {
     private $parser;
     private $typeResolver;
+    private $nameResolver;
 
-    public function __construct(Parser $parser = null, MethodTypeResolver $typeResolver = null)
+    public function __construct(Parser $parser = null, MemberTypeResolver $typeResolver = null)
     {
         $this->parser = $parser ?: new Parser();
         $this->typeResolver = $typeResolver ?: new DummyMethodTypeResolver();
+        $this->fqnResolver = new FullyQualifiedNameResolver();
     }
 
     public function inferTypeAtOffset(SourceCode $code, Offset $offset): InferredType
@@ -42,11 +44,11 @@ class TolerantTypeInferer implements TypeInferer
     private function resolveNode(Node $node)
     {
         if ($node instanceof QualifiedName) {
-            return $this->resolveQualifiedName($node);
+            return $this->fqnResolver->resolveQualifiedName($node);
         }
 
         if ($node instanceof Parameter) {
-            return $this->resolveQualifiedName($node->typeDeclaration);
+            return $this->fqnResolver->resolveQualifiedName($node->typeDeclaration);
         }
 
         if ($node instanceof Variable) {
@@ -61,25 +63,6 @@ class TolerantTypeInferer implements TypeInferer
 
     }
 
-    private function resolveQualifiedName(Node $node)
-    {
-        $imports = $node->getImportTablesForCurrentScope();
-        $classImports = $imports[0];
-
-        if (isset($classImports[$node->getText()])) {
-            return InferredType::fromString((string) $classImports[$node->getText()]);
-        }
-
-        if ($node->getParent() instanceof NamespaceUseClause) {
-            return InferredType::fromString((string) $node->getText());
-        }
-
-        if ($namespaceDefinition = $node->getNamespaceDefinition()) {
-            return InferredType::fromParts([$namespaceDefinition->name->getText(), $node->getText()]);
-        }
-
-        return InferredType::fromString($node->getText());
-    }
 
     private function resolveVariable(Variable $node)
     {

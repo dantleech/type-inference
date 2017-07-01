@@ -6,7 +6,7 @@ use DTL\TypeInference\Domain\TypeInferer;
 use DTL\TypeInference\Domain\SourceCode;
 use DTL\TypeInference\Domain\Offset;
 use DTL\TypeInference\Adapter\TolerantParser\TolerantTypeInferer;
-use DTL\TypeInference\Adapter\TolerantParser\TolerantMethodTypeResolver;
+use DTL\TypeInference\Adapter\TolerantParser\TolerantMemberTypeResolver;
 use DTL\TypeInference\Domain\SourceCodeLoader;
 
 final class TypeInference
@@ -22,7 +22,7 @@ final class TypeInference
     {
         return new self(new TolerantTypeInferer(
             null,
-            new TolerantMethodTypeResolver($loader)
+            new TolerantMemberTypeResolver($loader)
         ));
     }
 

@@ -6,7 +6,7 @@ use DTL\TypeInference\Domain\TypeInferer;
 use DTL\TypeInference\Adapter\TolerantParser\TolerantTypeInferer;
 use DTL\TypeInference\Tests\Adapter\TypeInferrerTestCase;
 use PHPUnit\Framework\TestCase;
-use DTL\TypeInference\Adapter\TolerantParser\TolerantMethodTypeResolver;
+use DTL\TypeInference\Adapter\TolerantParser\TolerantMemberTypeResolver;
 use DTL\TypeInference\Domain\SourceCodeLoader;
 use DTL\TypeInference\Domain\InferredType;
 use DTL\TypeInference\Domain\SourceCode;
@@ -21,7 +21,7 @@ class TolerantMemberTypeInfererTest extends TestCase
     public function setUp()
     {
         $this->loader = $this->prophesize(SourceCodeLoader::class);
-        $this->resolver = new TolerantMethodTypeResolver($this->loader->reveal());
+        $this->resolver = new TolerantMemberTypeResolver($this->loader->reveal());
     }
 
     /**
@@ -104,5 +104,57 @@ EOT
 
         $type = $this->resolver->methodType($type, MethodName::fromString('typeZ'));
         $this->assertEquals(InferredType::unknown(), $type);
+    }
+
+    /**
+     * It resolves the type of a property
+     */
+    public function testResolvePropertyType()
+    {
+        $source = SourceCode::fromString(<<<'EOT'
+<?php
+
+class Type1
+{
+    /**
+     * @var PropertyType
+     */
+    private $foobar;
+}
+EOT
+        );
+        $type = InferredType::fromString('Type1');
+        $this->loader->loadSourceFor($type)->willReturn($source);
+
+        $resolvedType = $this->resolver->propertyType($type, MethodName::fromString('foobar'));
+
+        $this->assertEquals('PropertyType', (string) $resolvedType);
+    }
+
+    /**
+     * It resolves the type of a property with a use statement
+     */
+    public function testResolvePropertyTypeUsed()
+    {
+        $source = SourceCode::fromString(<<<'EOT'
+<?php
+
+use Acme\Bumble\PropertyType;
+
+class Type1
+{
+    /**
+     * @var PropertyType
+     */
+    private $foobar;
+}
+EOT
+        );
+        $type = InferredType::fromString('Type1');
+        $this->loader->loadSourceFor($type)->willReturn($source);
+
+        $resolvedType = $this->resolver->propertyType($type, MethodName::fromString('foobar'));
+
+        $this->assertEquals('Acme\Bumble\PropertyType', (string) $resolvedType);
     }
 }
