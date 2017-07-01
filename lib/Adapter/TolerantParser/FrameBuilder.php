@@ -12,6 +12,7 @@ use Microsoft\PhpParser\Node\Parameter;
 use Microsoft\PhpParser\Node\Expression\AssignmentExpression;
 use Microsoft\PhpParser\Node\Expression\Variable as ExprVariable;
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
+use Microsoft\PhpParser\Token;
 
 final class FrameBuilder
 {
@@ -71,9 +72,18 @@ final class FrameBuilder
 
             $frame->set(Variable::fromNameAndType(
                 (string) $parameter->variableName->getText($node->getFileContents()),
-                $this->resolveName($parameter->typeDeclaration)
+                $this->resolveNodeType($parameter, $parameter->typeDeclaration)
             ));
         }
+    }
+
+    private function resolveNodeType($node, $type)
+    {
+        if ($type instanceof Token) {
+            return InferredType::fromString($type->getText($node->getFileContents()));
+        }
+
+        return $this->resolveName($type);
     }
 
     /**
@@ -100,5 +110,7 @@ final class FrameBuilder
         if ($node instanceof ExprVariable) {
             return $frame->getOrUnknown($node->getText())->type();
         }
+
+        return InferredType::unknown();
     }
 }

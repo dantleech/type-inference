@@ -11,12 +11,12 @@ class InferredType
         $this->type = $type;
     }
 
-    public static function fromString(string $type)
+    public static function fromString(string $type): InferredType
     {
         return new self($type);
     }
 
-    public static function fromParts(array $parts)
+    public static function fromParts(array $parts): InferredType
     {
         return new self(implode('\\', $parts));
     }

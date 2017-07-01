@@ -10,6 +10,7 @@ use DTL\ClassFileConverter\ClassToFileConverter;
 use DTL\TypeInference\Domain\SourcePath;
 use DTL\TypeInference\Domain\SourceCode;
 use DTL\ClassFileConverter\Domain\ClassName;
+use DTL\TypeInference\Domain\SourceCodeNotFound;
 
 class ClassToFileSourceCodeLoader implements SourceCodeLoader
 {
@@ -25,7 +26,7 @@ class ClassToFileSourceCodeLoader implements SourceCodeLoader
         $candidates = $this->converter->classToFileCandidates(ClassName::fromString((string) $type));
 
         if ($candidates->noneFound()) {
-            return SourcePath::none();
+            throw new SourceCodeNotFound($type);
         }
 
         foreach ($candidates as $candidate) {
@@ -34,6 +35,6 @@ class ClassToFileSourceCodeLoader implements SourceCodeLoader
             }
         }
 
-        return SourcePath::none();
+        throw new SourceCodeNotFound($type);
     }
 }
