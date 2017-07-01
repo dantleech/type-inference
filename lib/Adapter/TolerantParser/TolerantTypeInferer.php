@@ -23,6 +23,8 @@ use Microsoft\PhpParser\Node\Expression\CallExpression;
 use Microsoft\PhpParser\Node\Expression;
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
+use Microsoft\PhpParser\Node\Expression\ObjectCreationExpression;
+use Microsoft\PhpParser\Node\Expression\SubscriptExpression;
 
 class TolerantTypeInferer implements TypeInferer
 {
@@ -41,11 +43,12 @@ class TolerantTypeInferer implements TypeInferer
     {
         $node = $this->parser->parseSourceFile((string) $code);
         $node = $node->getDescendantNodeAtPosition($offset->asInt());
+        $frame = (new FrameBuilder())->buildUntil($node);
 
-        return $this->resolveNode($node);
+        return $this->resolveNode($frame, $node);
     }
 
-    private function resolveNode(Node $node)
+    private function resolveNode(Frame $frame, Node $node)
     {
         if ($node instanceof QualifiedName) {
             return $this->fqnResolver->resolveQualifiedName($node);
@@ -56,34 +59,41 @@ class TolerantTypeInferer implements TypeInferer
         }
 
         if ($node instanceof Variable) {
-            return $this->resolveVariable($node);
+            return $this->resolveVariable($frame, $node->getText());
         }
 
         if ($node instanceof MemberAccessExpression || $node instanceof CallExpression) {
-            return $this->resolveMemberAccess($node);
+            return $this->resolveMemberAccess($frame, $node);
         }
 
         if ($node instanceof ClassDeclaration || $node instanceof InterfaceDeclaration) {
             return InferredType::fromString($node->getNamespacedName());
         }
 
+        if ($node instanceof ObjectCreationExpression) {
+            return $this->fqnResolver->resolveQualifiedName($node->classTypeDesignator);
+        }
+
+        if ($node instanceof SubscriptExpression) {
+            return $this->resolveVariable($frame, $node->getText());
+        }
+
         return InferredType::unknown();
     }
 
 
-    private function resolveVariable(Variable $node)
+    private function resolveVariable(Frame $frame, string $name)
     {
-        $frame = (new FrameBuilder())->buildUntil($node);
-        $assignedNode = $frame->get($node->getText());
+        $assignedNode = $frame->get($name);
 
         if (null === $assignedNode) {
             return InferredType::unknown();
         }
 
-        return $this->resolveNode($assignedNode);
+        return $this->resolveNode($frame, $assignedNode);
     }
 
-    private function resolveMemberAccess(Expression $node, $list = [])
+    private function resolveMemberAccess(Frame $frame, Expression $node, $list = [])
     {
         $ancestors = [  ];
         while ($node instanceof MemberAccessExpression || $node instanceof CallExpression) {
@@ -103,7 +113,7 @@ class TolerantTypeInferer implements TypeInferer
         $context = null;
         foreach ($ancestors as $ancestor) {
             if ($context === null) {
-                $context = $this->resolveNode($ancestor);
+                $context = $this->resolveNode($frame, $ancestor);
 
                 if (InferredType::unknown() == $context) {
                     return InferredType::unknown();

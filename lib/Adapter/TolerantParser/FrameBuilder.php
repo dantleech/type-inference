@@ -12,6 +12,7 @@ use Microsoft\PhpParser\Node\Expression\AssignmentExpression;
 use Microsoft\PhpParser\Node\Expression\Variable as ExprVariable;
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Token;
+use Microsoft\PhpParser\Node\SourceFileNode;
 
 final class FrameBuilder
 {
@@ -31,7 +32,8 @@ final class FrameBuilder
     {
         return $node->getFirstAncestor(
             MethodDeclaration::class,
-            FunctionDeclaration::class
+            FunctionDeclaration::class,
+            SourceFileNode::class
         );
     }
 

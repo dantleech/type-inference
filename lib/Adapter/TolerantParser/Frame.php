@@ -6,7 +6,7 @@ use Microsoft\PhpParser\Node;
 
 final class Frame
 {
-    private $nodes;
+    private $nodes = [];
 
     public function set(string $name, Node $node)
     {

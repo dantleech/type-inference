@@ -316,6 +316,24 @@ class Foobar
 EOT
                 , 269, InferredType::fromString('Foobar\Barfoo\Type2')
             ],
+            'It returns type for a new instantiation' => [
+                <<<'EOT'
+<?php
+
+new Bar();
+EOT
+                , 9, InferredType::fromString('Bar')
+            ],
+            'It returns type for an array access' => [
+                <<<'EOT'
+<?php
+
+$foobar['barfoo'] = new Bar();
+$barbar = $foobar['barfoo'];
+$barbar;
+EOT
+                , 69, InferredType::fromString('Bar')
+            ],
         ];
 
     }
