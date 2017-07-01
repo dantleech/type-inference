@@ -245,6 +245,48 @@ class Foobar
 EOT
                 , 215, InferredType::fromString('Hello\World')
             ],
+            'It returns type for a member access expression' => [
+                <<<'EOT'
+<?php
+
+namespace Foobar\Barfoo;
+
+class Type3
+{
+    public function foobar(): Foobar
+    {
+    }
+    }
+
+class Type2
+{
+    public function type3(): Type3
+    {
+    }
+}
+
+class Type1
+{
+    public function type2(): Type2
+    {
+    }
+}
+
+class Foobar
+{
+    /**
+     * @var Type1
+     */
+    private $foobar;
+
+    public function hello(Barfoo $world)
+    {
+        $this->foobar->type2()->type3();
+    }
+}
+EOT
+                , 384, InferredType::fromString('Foobar\Barfoo\Type3')
+            ],
         ];
 
     }

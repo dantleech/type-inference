@@ -19,6 +19,7 @@ use DTL\TypeInference\Domain\MemberTypeResolver;
 use Microsoft\PhpParser\Node\Expression\MemberAccessExpression;
 use DTL\TypeInference\Domain\MethodName;
 use DTL\TypeInference\Adapter\Dummy\DummyMethodTypeResolver;
+use Microsoft\PhpParser\Node\Expression\CallExpression;
 
 class TolerantTypeInferer implements TypeInferer
 {
@@ -75,11 +76,18 @@ class TolerantTypeInferer implements TypeInferer
 
     private function resolveMemberAccess(MemberAccessExpression $node, $list = [])
     {
-        $ancestors = [ $node ];
-        while ($node instanceof MemberAccessExpression) {
-            $node = $node->dereferencableExpression;
+        $ancestors = [  ];
+        while ($node instanceof MemberAccessExpression || $node instanceof CallExpression) {
+            if ($node instanceof CallExpression) {
+                $node = $node->callableExpression;
+                continue;
+            }
+
             $ancestors[] = $node;
+            $node = $node->dereferencableExpression;
         }
+
+        $ancestors[] = $node;
 
         $ancestors = array_reverse($ancestors);
 
