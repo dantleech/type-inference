@@ -13,6 +13,10 @@ class InferredType
 
     public static function fromString(string $type): InferredType
     {
+        if (substr($type, 0, 1) == '\\') {
+            $type = substr($type, 1);
+        }
+
         return new self($type);
     }
 

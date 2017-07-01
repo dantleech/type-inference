@@ -221,6 +221,30 @@ class Foobar
 EOT
                 , 211, InferredType::fromString('Things\Response')
             ],
+            'It returns type for a property' => [
+                <<<'EOT'
+<?php
+
+namespace Foobar\Barfoo;
+
+use Acme\Factory;
+use Things\Response;
+
+class Foobar
+{
+    /**
+     * @var \Hello\World
+     */
+    private $foobar;
+
+    public function hello(Barfoo $world)
+    {
+        $this->foobar;
+    }
+}
+EOT
+                , 215, InferredType::fromString('Hello\World')
+            ],
         ];
 
     }

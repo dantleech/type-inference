@@ -83,6 +83,12 @@ class TolerantTypeInferer implements TypeInferer
 
         $memberName = $node->memberName->getText($node->getFileContents());
 
-        return $this->typeResolver->methodType($baseType, MethodName::fromString($memberName));
+        $type = $this->typeResolver->methodType($baseType, MethodName::fromString($memberName));
+
+        if (InferredType::unknown() != $type) {
+            return $type;
+        }
+
+        return $this->typeResolver->propertyType($baseType, MethodName::fromString($memberName));
     }
 }
