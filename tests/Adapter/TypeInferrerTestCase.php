@@ -314,7 +314,7 @@ class Foobar
     }
 }
 EOT
-                , 269, InferredType::fromString('Foobar\Barfoo\Type3')
+                , 269, InferredType::fromString('Foobar\Barfoo\Type2')
             ],
         ];
 

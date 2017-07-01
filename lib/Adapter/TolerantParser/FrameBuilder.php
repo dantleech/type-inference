@@ -3,7 +3,6 @@
 namespace DTL\TypeInference\Adapter\TolerantParser;
 
 use Microsoft\PhpParser\Node;
-use DTL\TypeInference\Domain\Frame;
 use Microsoft\PhpParser\Node\MethodDeclaration;
 use Microsoft\PhpParser\Node\Statement\FunctionDeclaration;
 use DTL\TypeInference\Domain\Variable;
@@ -43,10 +42,10 @@ final class FrameBuilder
         }
 
         if ($node instanceof AssignmentExpression) {
-            $frame->set(Variable::fromNameAndType(
-                $node->leftOperand->getText(),
-                $this->resolveType($frame, $node->rightOperand)
-            ));
+            $frame->set(
+                $node->leftOperand,
+                $node->rightOperand
+            );
         }
 
         foreach ($node->getChildNodes() as $childNode) {
@@ -58,59 +57,17 @@ final class FrameBuilder
     {
         $namespace = $node->getNamespaceDefinition();
         $class = $node->getFirstAncestor(ClassDeclaration::class);
-        $frame->set(Variable::fromNameAndType(
-            '$this',
-            InferredType::fromString(
-                $namespace->name->getText() . '\\' . $class->name->getText($node->getFileContents())
-            )
-        ));
+        $frame->set('$this', $class);
 
         foreach ($node->parameters->children as $parameter) {
             if (false === $parameter instanceof Parameter) {
                 continue;
             }
 
-            $frame->set(Variable::fromNameAndType(
-                (string) $parameter->variableName->getText($node->getFileContents()),
-                $this->resolveNodeType($parameter, $parameter->typeDeclaration)
-            ));
+            $frame->set(
+                $parameter->variableName->getText($node->getFileContents()),
+                $parameter
+            );
         }
-    }
-
-    private function resolveNodeType($node, $type)
-    {
-        if ($type instanceof Token) {
-            return InferredType::fromString($type->getText($node->getFileContents()));
-        }
-
-        return $this->resolveName($type);
-    }
-
-    /**
-     * TODO: Copied from TolerantTypeInferer
-     */
-    private function resolveName(Node $node)
-    {
-        $imports = $node->getImportTablesForCurrentScope();
-        $classImports = $imports[0];
-
-        if (isset($classImports[$node->getText()])) {
-            return InferredType::fromString((string) $classImports[$node->getText()]);
-        }
-
-        if ($namespaceDefinition = $node->getNamespaceDefinition()) {
-            return InferredType::fromParts([$namespaceDefinition->name->getText(), $node->getText()]);
-        }
-
-        return InferredType::fromString($node->getText());
-    }
-
-    private function resolveType(Frame $frame, Node $node)
-    {
-        if ($node instanceof ExprVariable) {
-            return $frame->getOrUnknown($node->getText())->type();
-        }
-
-        return InferredType::unknown();
     }
 }
