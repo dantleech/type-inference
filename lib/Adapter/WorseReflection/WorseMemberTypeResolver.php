@@ -32,11 +32,6 @@ final class WorseMemberTypeResolver implements MemberTypeResolver
             return InferredType::unknown();
         }
 
-        // TODO: Support interfaces in type-inferer
-        if (!$class instanceof ReflectionClass) {
-            return InferredType::unknown();
-        }
-
         try {
             $method = $class->methods()->get((string) $name);
         } catch (\InvalidArgumentException $e) {
@@ -59,7 +54,6 @@ final class WorseMemberTypeResolver implements MemberTypeResolver
             return InferredType::unknown();
         }
 
-        // TODO: Support interfaces in type-inferer
         if (!$class instanceof ReflectionClass) {
             return InferredType::unknown();
         }
