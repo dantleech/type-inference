@@ -11,7 +11,11 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/Microsoft/tolerant-php-parser"
+            "url": "https://github.com/microsoft/tolerant-php-parser"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/dantleech/worse-reflection"
         },
         {
             "type": "vcs",
@@ -20,7 +24,8 @@
     ],
     "require": {
         "microsoft/tolerant-php-parser": "dev-master",
-        "dantleech/class-to-file": "dev-master"
+        "dantleech/class-to-file": "dev-master",
+        "dantleech/worse-reflection": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.2"
