@@ -9,7 +9,7 @@ use DTL\TypeInference\Adapter\WorseReflection\WorseMemberTypeResolver;
 use DTL\TypeInference\Adapter\WorseReflection\WorseSourceCodeLocator;
 use DTL\WorseReflection\Reflector;
 
-class TolerantMemberTypeResolverTest extends MemberTypeResolverTestCase
+class WorseMemberTypeResolverTest extends MemberTypeResolverTestCase
 {
     protected function resolver(): MemberTypeResolver
     {
