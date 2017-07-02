@@ -9,6 +9,7 @@ use DTL\TypeInference\Domain\MethodName;
 use DTL\WorseReflection\Reflector;
 use DTL\TypeInference\Domain\SourceCodeNotFound;
 use DTL\WorseReflection\Exception\ClassNotFound;
+use DTL\WorseReflection\Reflection\ReflectionClass;
 
 final class WorseMemberTypeResolver implements MemberTypeResolver
 {
@@ -25,14 +26,22 @@ final class WorseMemberTypeResolver implements MemberTypeResolver
     {
         try {
             $class = $this->reflector->reflectClass(ClassName::fromString((string) $type));
-        } catch (SourceCodeNotFound $e)
-        {
+        } catch (SourceCodeNotFound $e) {
             return InferredType::unknown();
         } catch (ClassNotFound $e) {
             return InferredType::unknown();
         }
 
-        $method = $class->methods()->get((string) $name);
+        // TODO: Support interfaces in type-inferer
+        if (!$class instanceof ReflectionClass) {
+            return InferredType::unknown();
+        }
+
+        try {
+            $method = $class->methods()->get((string) $name);
+        } catch (\InvalidArgumentException $e) {
+            return InferredType::unknown();
+        }
 
         $type = $method->type()->className() ?: (string) $method->type();
 
@@ -47,6 +56,11 @@ final class WorseMemberTypeResolver implements MemberTypeResolver
         {
             return InferredType::unknown();
         } catch (ClassNotFound $e) {
+            return InferredType::unknown();
+        }
+
+        // TODO: Support interfaces in type-inferer
+        if (!$class instanceof ReflectionClass) {
             return InferredType::unknown();
         }
 
