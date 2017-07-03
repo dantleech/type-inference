@@ -8,6 +8,7 @@ use DTL\TypeInference\Domain\Offset;
 use DTL\TypeInference\Adapter\TolerantParser\TolerantTypeInferer;
 use DTL\TypeInference\Adapter\TolerantParser\TolerantMemberTypeResolver;
 use DTL\TypeInference\Domain\SourceCodeLoader;
+use DTL\TypeInference\Domain\InferredType;
 
 final class TypeInference
 {
@@ -29,7 +30,7 @@ final class TypeInference
         ));
     }
 
-    public function inferTypeAtOffset(string $source, int $offset)
+    public function inferTypeAtOffset(string $source, int $offset): InferredType
     {
         return $this->inferer->inferTypeAtOffset(
             SourceCode::fromString($source),

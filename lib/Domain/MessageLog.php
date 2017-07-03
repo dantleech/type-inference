@@ -10,4 +10,9 @@ final class MessageLog
     {
         $this->messages[] = $message;
     }
+
+    public function messages(): array
+    {
+        return $this->messages;
+    }
 }

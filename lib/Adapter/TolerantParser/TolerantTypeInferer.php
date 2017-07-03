@@ -60,7 +60,9 @@ class TolerantTypeInferer implements TypeInferer
         }
 
         if ($node instanceof Parameter) {
-            return $this->fqnResolver->resolveQualifiedName($node->typeDeclaration);
+            if ($node->typeDeclaration instanceof QualifiedName) {
+                return $this->fqnResolver->resolveQualifiedName($node->typeDeclaration);
+            }
         }
 
         if ($node instanceof Variable) {

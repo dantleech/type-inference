@@ -40,7 +40,6 @@ final class Frame implements FrameInterface
                 'node_class' => get_class($node),
                 'start' => $node->getStart(),
                 'end' => $node->getEndPosition(),
-                'text' => $node->getText(),
             ];
         }
 
