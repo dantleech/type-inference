@@ -49,6 +49,11 @@ final class TolerantMemberTypeResolver implements MemberTypeResolver
                         return InferredType::fromString($this->fqnResolver->resolveQualifiedName($node, $return->value()));
                     }
 
+                    $log->log(sprintf(
+                        'Could not determine return type for "%s" from method declaration or docblock',
+                        $node->getName()
+                    ));
+
                     return InferredType::unknown();
                 }
                 return InferredType::fromString($node->returnType->getResolvedName());
@@ -63,11 +68,16 @@ final class TolerantMemberTypeResolver implements MemberTypeResolver
     {
         return $this->memberType($log, $type, (string) $name, [
             'node_class' => PropertyDeclaration::class,
-            'resolver' => function ($node) {
+            'resolver' => function ($node) use ($log) {
                 $docblock = $this->docblockParser->parse($node->getLeadingCommentAndWhitespaceText());
                 foreach ($docblock->tagsNamed('var') as $var) {
                     return InferredType::fromString($this->fqnResolver->resolveQualifiedName($node, $var->value()));
                 }
+
+                $log->log(sprintf(
+                    'Could not determine type for "%s" from property declaration or docblock',
+                    $node->getName()
+                ));
 
                 return InferredType::unknown();
             },
@@ -81,11 +91,12 @@ final class TolerantMemberTypeResolver implements MemberTypeResolver
         ]);
     }
 
-    private function memberType(MessageLog $context, InferredType $type, string $name, $strategy)
+    private function memberType(MessageLog $log, InferredType $type, string $name, $strategy)
     {
         try {
             $sourceCode = $this->sourceLoader->loadSourceFor($type);
         } catch (SourceCodeNotFound $e) {
+            $log->log($e->getMessage());
             return InferredType::unknown();
         }
 
@@ -101,6 +112,8 @@ final class TolerantMemberTypeResolver implements MemberTypeResolver
                 }
             }
         }
+
+        $log->log(sprintf('Could not find class "%s" in source.', (string) $type));
 
         return InferredType::unknown();
     }

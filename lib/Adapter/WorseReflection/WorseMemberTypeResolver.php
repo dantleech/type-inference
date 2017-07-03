@@ -23,19 +23,22 @@ final class WorseMemberTypeResolver implements MemberTypeResolver
         $this->reflector = $reflector;
     }
 
-    public function methodType(MessageLog $context, InferredType $type, MethodName $name): InferredType
+    public function methodType(MessageLog $log, InferredType $type, MethodName $name): InferredType
     {
         try {
             $class = $this->reflector->reflectClass(ClassName::fromString((string) $type));
         } catch (SourceCodeNotFound $e) {
+            $log->log($e->getMessage());
             return InferredType::unknown();
         } catch (ClassNotFound $e) {
+            $log->log($e->getMessage());
             return InferredType::unknown();
         }
 
         try {
             $method = $class->methods()->get((string) $name);
         } catch (\InvalidArgumentException $e) {
+            $log->log($e->getMessage());
             return InferredType::unknown();
         }
 
@@ -44,14 +47,15 @@ final class WorseMemberTypeResolver implements MemberTypeResolver
         return InferredType::fromString($type);
     }
 
-    public function propertyType(MessageLog $context, InferredType $type, MethodName $name): InferredType
+    public function propertyType(MessageLog $log, InferredType $type, MethodName $name): InferredType
     {
         try {
             $class = $this->reflector->reflectClass(ClassName::fromString((string) $type));
-        } catch (SourceCodeNotFound $e)
-        {
+        } catch (SourceCodeNotFound $e) {
+            $log->log($e->getMessage());
             return InferredType::unknown();
         } catch (ClassNotFound $e) {
+            $log->log($e->getMessage());
             return InferredType::unknown();
         }
 
@@ -59,7 +63,11 @@ final class WorseMemberTypeResolver implements MemberTypeResolver
             return InferredType::unknown();
         }
 
-        $property = $class->properties()->get((string) $name);
+        try {
+            $property = $class->properties()->get((string) $name);
+        } catch (\InvalidArgumentException $e) {
+            $log->log($e->getMessage());
+        }
 
         $type = $property->type()->className() ?: (string) $property->type();
 
