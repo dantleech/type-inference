@@ -25,6 +25,7 @@ use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
 use Microsoft\PhpParser\Node\Expression\ObjectCreationExpression;
 use Microsoft\PhpParser\Node\Expression\SubscriptExpression;
+use DTL\TypeInference\Domain\TypeInferenceContext;
 
 class TolerantTypeInferer implements TypeInferer
 {
@@ -44,11 +45,12 @@ class TolerantTypeInferer implements TypeInferer
         $node = $this->parser->parseSourceFile((string) $code);
         $node = $node->getDescendantNodeAtPosition($offset->asInt());
         $frame = (new FrameBuilder())->buildUntil($node);
+        $context = TypeInferenceContext::fromFrame($frame);
 
-        return $this->resolveNode($frame, $node);
+        return $this->resolveNode($context, $node);
     }
 
-    private function resolveNode(Frame $frame, Node $node)
+    private function resolveNode(TypeInferenceContext $context, Node $node)
     {
         if ($node instanceof QualifiedName) {
             return $this->fqnResolver->resolveQualifiedName($node);
@@ -59,11 +61,11 @@ class TolerantTypeInferer implements TypeInferer
         }
 
         if ($node instanceof Variable) {
-            return $this->resolveVariable($frame, $node->getText());
+            return $this->resolveVariable($context, $node->getText());
         }
 
         if ($node instanceof MemberAccessExpression || $node instanceof CallExpression) {
-            return $this->resolveMemberAccess($frame, $node);
+            return $this->resolveMemberAccess($context, $node);
         }
 
         if ($node instanceof ClassDeclaration || $node instanceof InterfaceDeclaration) {
@@ -75,27 +77,31 @@ class TolerantTypeInferer implements TypeInferer
         }
 
         if ($node instanceof SubscriptExpression) {
-            return $this->resolveVariable($frame, $node->getText());
+            return $this->resolveVariable($context, $node->getText());
         }
+
+        $context->log(sprintf('Could not infer type for node of type "%s"', get_class($node)));
 
         return InferredType::unknown();
     }
 
 
-    private function resolveVariable(Frame $frame, string $name)
+    private function resolveVariable(TypeInferenceContext $context, string $name)
     {
-        $assignedNode = $frame->get($name);
+        $assignedNode = $context->frame()->get($name);
 
         if (null === $assignedNode) {
+            $context->log(sprintf('Variable "%s" was not assigned', $name));
+
             return InferredType::unknown();
         }
 
-        return $this->resolveNode($frame, $assignedNode);
+        return $this->resolveNode($context, $assignedNode);
     }
 
-    private function resolveMemberAccess(Frame $frame, Expression $node, $list = [])
+    private function resolveMemberAccess(TypeInferenceContext $context, Expression $node, $list = [])
     {
-        $ancestors = [  ];
+        $ancestors = [];
         while ($node instanceof MemberAccessExpression || $node instanceof CallExpression) {
             if ($node instanceof CallExpression) {
                 $node = $node->callableExpression;
@@ -110,36 +116,36 @@ class TolerantTypeInferer implements TypeInferer
 
         $ancestors = array_reverse($ancestors);
 
-        $context = null;
+        $parent = null;
         foreach ($ancestors as $ancestor) {
-            if ($context === null) {
-                $context = $this->resolveNode($frame, $ancestor);
+            if ($parent === null) {
+                $parent = $this->resolveNode($context, $ancestor);
 
-                if (InferredType::unknown() == $context) {
+                if (InferredType::unknown() == $parent) {
                     return InferredType::unknown();
                 }
 
                 continue;
             }
 
-            $type = $this->resolveMemberType($context, $ancestor);
-            $context = $type;
+            $type = $this->resolveMemberType($context, $parent, $ancestor);
+            $parent = $type;
         }
 
         return $type;
     }
 
-    private function resolveMemberType(InferredType $context, $node)
+    private function resolveMemberType(TypeInferenceContext $context, InferredType $parent, $node)
     {
         $memberName = $node->memberName->getText($node->getFileContents());
 
-        $type = $this->typeResolver->methodType($context, MethodName::fromString($memberName));
+        $type = $this->typeResolver->methodType($parent, MethodName::fromString($memberName));
 
         if (InferredType::unknown() != $type) {
             return $type;
         }
 
-        $type = $this->typeResolver->propertyType($context, MethodName::fromString($memberName));
+        $type = $this->typeResolver->propertyType($parent, MethodName::fromString($memberName));
 
         return $type;
     }
