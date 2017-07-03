@@ -23,4 +23,27 @@ final class Frame implements FrameInterface
     {
         return array_keys($this->nodes);
     }
+
+    /**
+     * This is not part of the public API.
+     */
+    public function tolerantNodes(): array
+    {
+        return $this->nodes;
+    }
+
+    public function asDebugMap(): array
+    {
+        $map = [];
+        foreach ($this->nodes as $name => $node) {
+            $map[$name] = [
+                'node_class' => get_class($node),
+                'start' => $node->getStart(),
+                'end' => $node->getEndPosition(),
+                'text' => $node->getText(),
+            ];
+        }
+
+        return $map;
+    }
 }

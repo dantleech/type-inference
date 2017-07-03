@@ -49,11 +49,11 @@ class TolerantTypeInferer implements TypeInferer
         $log = new MessageLog();
 
         return InferredTypeResult::fromTypeFrameAndMessageLog(
-            $this->resolveNode($log, $frame, $node), $frame, $log
+            $this->resolveNode($log, $frame, $node), new ResolvedFrame($this, $frame), $log
         );
     }
 
-    private function resolveNode(MessageLog $log, Frame $frame, Node $node)
+    public function resolveNode(MessageLog $log, Frame $frame, Node $node)
     {
         if ($node instanceof QualifiedName) {
             return $this->fqnResolver->resolveQualifiedName($node);
