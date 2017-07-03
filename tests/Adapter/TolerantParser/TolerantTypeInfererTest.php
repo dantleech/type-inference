@@ -41,6 +41,7 @@ EOT
             SourceCode::fromString($source),
             Offset::fromInt(30)
         );
-        var_dump($result->frame()->asDebugMap());die();;
+        $map = $result->frame()->asDebugMap();
+        $this->assertCount(3, $map);
     }
 }

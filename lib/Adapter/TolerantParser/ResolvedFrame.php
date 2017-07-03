@@ -28,11 +28,12 @@ class ResolvedFrame implements FrameInterface
     {
         $map = $this->frame->asDebugMap();
         foreach ($this->frame->tolerantNodes() as $name => $node) {
-            $type = $this->typeInferrer->inferTypeAtOffset(
-                SourceCode::fromString($node->getFileContents()),
-                Offset::fromInt($node->getStart())
+            $type = $this->typeInferrer->resolveNode(
+                new MessageLog(),
+                $this->frame,
+                $node
             );
-            $map[$name]['inferrered_type'] = (string) $type->type();
+            $map[$name]['inferrered_type'] = (string) $type;
         }
 
         return $map;
