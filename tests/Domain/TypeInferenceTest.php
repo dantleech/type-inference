@@ -8,6 +8,9 @@ use DTL\TypeInference\TypeInference;
 use DTL\TypeInference\Domain\SourceCode;
 use DTL\TypeInference\Domain\Offset;
 use DTL\TypeInference\Domain\InferredType;
+use DTL\TypeInference\Domain\Frame;
+use DTL\TypeInference\Domain\MessageLog;
+use DTL\TypeInference\Domain\InferredTypeResult;
 
 class TypeInferenceTest extends TestCase
 {
@@ -28,9 +31,15 @@ class TypeInferenceTest extends TestCase
         $source = SourceCode::fromString('<?php');
         $expectedType = InferredType::fromString('Foobar');
         $offset = Offset::fromInt(12);
-        $this->typeInferer->inferTypeAtOffset($source, $offset)->willReturn($expectedType);
+        $this->typeInferer->inferTypeAtOffset($source, $offset)->willReturn(
+            InferredTypeResult::fromTypeFrameAndMessageLog(
+                $expectedType,
+                $this->prophesize(Frame::class)->reveal(),
+                new MessageLog()
+            )
+        );
 
         $type = $this->typeInference->inferTypeAtOffset('<?php', 12);
-        $this->assertSame($expectedType, $type);
+        $this->assertSame($expectedType, $type->type());
     }
 }

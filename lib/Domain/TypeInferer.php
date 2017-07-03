@@ -6,5 +6,5 @@ use DTL\TypeInference\Domain\SourceCode;
 
 interface TypeInferer
 {
-    public function inferTypeAtOffset(SourceCode $source, Offset $offset): InferredType;
+    public function inferTypeAtOffset(SourceCode $source, Offset $offset): InferredTypeResult;
 }

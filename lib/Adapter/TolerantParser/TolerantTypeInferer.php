@@ -26,6 +26,7 @@ use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
 use Microsoft\PhpParser\Node\Expression\ObjectCreationExpression;
 use Microsoft\PhpParser\Node\Expression\SubscriptExpression;
 use DTL\TypeInference\Domain\MessageLog;
+use DTL\TypeInference\Domain\InferredTypeResult;
 
 class TolerantTypeInferer implements TypeInferer
 {
@@ -40,14 +41,16 @@ class TolerantTypeInferer implements TypeInferer
         $this->fqnResolver = new FullyQualifiedNameResolver();
     }
 
-    public function inferTypeAtOffset(SourceCode $code, Offset $offset): InferredType
+    public function inferTypeAtOffset(SourceCode $code, Offset $offset): InferredTypeResult
     {
         $node = $this->parser->parseSourceFile((string) $code);
         $node = $node->getDescendantNodeAtPosition($offset->asInt());
         $frame = (new FrameBuilder())->buildUntil($node);
         $log = new MessageLog();
 
-        return $this->resolveNode($log, $frame, $node);
+        return InferredTypeResult::fromTypeFrameAndMessageLog(
+            $this->resolveNode($log, $frame, $node), $frame, $log
+        );
     }
 
     private function resolveNode(MessageLog $log, Frame $frame, Node $node)

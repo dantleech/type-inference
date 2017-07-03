@@ -33,8 +33,8 @@ abstract class TypeInferrerTestCase extends TestCase
     public function testAdapter(string $source, int $offset, InferredType $expectedType)
     {
         $this->sourceCodeLoader->loadSourceFor(Argument::any())->willReturn(SourceCode::fromString($source));
-        $type = $this->inferrer()->inferTypeAtOffset(SourceCode::fromString($source), Offset::fromInt($offset));
-        $this->assertEquals($expectedType, $type);
+        $result = $this->inferrer()->inferTypeAtOffset(SourceCode::fromString($source), Offset::fromInt($offset));
+        $this->assertEquals($expectedType, $result->type());
     }
 
     public function provideTests()
