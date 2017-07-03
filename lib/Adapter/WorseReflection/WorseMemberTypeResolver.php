@@ -10,6 +10,7 @@ use DTL\WorseReflection\Reflector;
 use DTL\TypeInference\Domain\SourceCodeNotFound;
 use DTL\WorseReflection\Exception\ClassNotFound;
 use DTL\WorseReflection\Reflection\ReflectionClass;
+use DTL\TypeInference\Domain\MessageLog;
 
 final class WorseMemberTypeResolver implements MemberTypeResolver
 {
@@ -22,7 +23,7 @@ final class WorseMemberTypeResolver implements MemberTypeResolver
         $this->reflector = $reflector;
     }
 
-    public function methodType(InferredType $type, MethodName $name): InferredType
+    public function methodType(MessageLog $context, InferredType $type, MethodName $name): InferredType
     {
         try {
             $class = $this->reflector->reflectClass(ClassName::fromString((string) $type));
@@ -43,7 +44,7 @@ final class WorseMemberTypeResolver implements MemberTypeResolver
         return InferredType::fromString($type);
     }
 
-    public function propertyType(InferredType $type, MethodName $name): InferredType
+    public function propertyType(MessageLog $context, InferredType $type, MethodName $name): InferredType
     {
         try {
             $class = $this->reflector->reflectClass(ClassName::fromString((string) $type));

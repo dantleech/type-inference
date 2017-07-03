@@ -15,6 +15,7 @@ use Microsoft\PhpParser\Node\PropertyDeclaration;
 use DTL\TypeInference\Domain\DocblockParser;
 use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
 use Microsoft\PhpParser\NamespacedNameInterface;
+use DTL\TypeInference\Domain\MessageLog;
 
 final class TolerantMemberTypeResolver implements MemberTypeResolver
 {
@@ -36,9 +37,9 @@ final class TolerantMemberTypeResolver implements MemberTypeResolver
         $this->sourceLoader = $sourceLoader;
     }
 
-    public function methodType(InferredType $type, MethodName $name): InferredType
+    public function methodType(MessageLog $log, InferredType $type, MethodName $name): InferredType
     {
-        return $this->memberType($type, (string) $name, [
+        return $this->memberType($log, $type, (string) $name, [
             'node_class' => MethodDeclaration::class,
             'resolver' => function (MethodDeclaration $node) {
                 if (null === $node->returnType) {
@@ -58,9 +59,9 @@ final class TolerantMemberTypeResolver implements MemberTypeResolver
         ]);
     }
 
-    public function propertyType(InferredType $type, MethodName $name): InferredType
+    public function propertyType(MessageLog $log, InferredType $type, MethodName $name): InferredType
     {
-        return $this->memberType($type, (string) $name, [
+        return $this->memberType($log, $type, (string) $name, [
             'node_class' => PropertyDeclaration::class,
             'resolver' => function ($node) {
                 $docblock = $this->docblockParser->parse($node->getLeadingCommentAndWhitespaceText());
@@ -80,7 +81,7 @@ final class TolerantMemberTypeResolver implements MemberTypeResolver
         ]);
     }
 
-    private function memberType(InferredType $type, string $name, $strategy)
+    private function memberType(MessageLog $context, InferredType $type, string $name, $strategy)
     {
         try {
             $sourceCode = $this->sourceLoader->loadSourceFor($type);

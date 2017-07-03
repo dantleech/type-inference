@@ -1,29 +1,28 @@
 <?php
 
-namespace DTL\TypeInference\Tests\Adapter;
+namespace DTL\TypeInference\Tests\Adapter\TolerantParser;
 
 use DTL\TypeInference\Domain\TypeInferer;
+use DTL\TypeInference\Adapter\TolerantParser\TolerantTypeInferer;
 use DTL\TypeInference\Tests\Adapter\TypeInferrerTestCase;
 use PHPUnit\Framework\TestCase;
+use DTL\TypeInference\Adapter\TolerantParser\TolerantMemberTypeResolver;
 use DTL\TypeInference\Domain\SourceCodeLoader;
 use DTL\TypeInference\Domain\InferredType;
 use DTL\TypeInference\Domain\SourceCode;
 use DTL\TypeInference\Domain\MethodName;
 use DTL\TypeInference\Domain\SourceCodeNotFound;
-use DTL\TypeInference\Domain\MemberTypeResolver;
-use DTL\TypeInference\Domain\MessageLog;
 
-abstract class MemberTypeResolverTestCase extends TestCase
+class TolerantMemberTypeInfererTest extends TestCase
 {
-    protected $loader;
+    private $loader;
     private $resolver;
 
     public function setUp()
     {
         $this->loader = $this->prophesize(SourceCodeLoader::class);
+        $this->resolver = new TolerantMemberTypeResolver($this->loader->reveal());
     }
-
-    abstract protected function resolver(): MemberTypeResolver;
 
     /**
      * It resolves the type of a method
@@ -43,9 +42,8 @@ EOT
         );
         $type = InferredType::fromString('Type1');
         $this->loader->loadSourceFor($type)->willReturn($source);
-        $log = new MessageLog();
 
-        $resolvedType = $this->resolver()->methodType($log, $type, MethodName::fromString('type2'));
+        $resolvedType = $this->resolver->methodType($type, MethodName::fromString('type2'));
 
         $this->assertEquals('Type2', (string) $resolvedType);
     }
@@ -71,9 +69,8 @@ EOT
         );
         $type = InferredType::fromString('Type1');
         $this->loader->loadSourceFor($type)->willReturn($source);
-        $log = new MessageLog();
 
-        $resolvedType = $this->resolver()->methodType($log, $type, MethodName::fromString('type2'));
+        $resolvedType = $this->resolver->methodType($type, MethodName::fromString('type2'));
 
         $this->assertEquals('Type2', (string) $resolvedType);
     }
@@ -85,9 +82,8 @@ EOT
     {
         $type = InferredType::fromString('Type1');
         $this->loader->loadSourceFor($type)->willThrow(new SourceCodeNotFound($type));
-        $log = new MessageLog();
 
-        $type = $this->resolver()->methodType($log, $type, MethodName::fromString('type2'));
+        $type = $this->resolver->methodType($type, MethodName::fromString('type2'));
         $this->assertEquals(InferredType::unknown(), $type);
     }
 
@@ -109,9 +105,8 @@ EOT
         );
         $type = InferredType::fromString('TypeZ');
         $this->loader->loadSourceFor($type)->willReturn($source);
-        $log = new MessageLog();
 
-        $type = $this->resolver()->methodType($log, $type, MethodName::fromString('type2'));
+        $type = $this->resolver->methodType($type, MethodName::fromString('type2'));
         $this->assertEquals(InferredType::unknown(), $type);
     }
 
@@ -133,9 +128,8 @@ EOT
         );
         $type = InferredType::fromString('TypeZ');
         $this->loader->loadSourceFor($type)->willReturn($source);
-        $log = new MessageLog();
 
-        $type = $this->resolver()->methodType($log, $type, MethodName::fromString('typeZ'));
+        $type = $this->resolver->methodType($type, MethodName::fromString('typeZ'));
         $this->assertEquals(InferredType::unknown(), $type);
     }
 
@@ -158,9 +152,8 @@ EOT
         );
         $type = InferredType::fromString('Type1');
         $this->loader->loadSourceFor($type)->willReturn($source);
-        $log = new MessageLog();
 
-        $resolvedType = $this->resolver()->propertyType($log, $type, MethodName::fromString('foobar'));
+        $resolvedType = $this->resolver->propertyType($type, MethodName::fromString('foobar'));
 
         $this->assertEquals('PropertyType', (string) $resolvedType);
     }
@@ -186,10 +179,8 @@ EOT
         );
         $type = InferredType::fromString('Type1');
         $this->loader->loadSourceFor($type)->willReturn($source);
-        $log = new MessageLog();
 
-        $resolvedType = $this->resolver()->propertyType($log, $type, MethodName::fromString('foobar'));
-
+        $resolvedType = $this->resolver->propertyType($type, MethodName::fromString('foobar'));
 
         $this->assertEquals('Acme\Bumble\PropertyType', (string) $resolvedType);
     }
