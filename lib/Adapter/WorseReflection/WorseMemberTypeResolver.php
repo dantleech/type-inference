@@ -67,6 +67,7 @@ final class WorseMemberTypeResolver implements MemberTypeResolver
             $property = $class->properties()->get((string) $name);
         } catch (\InvalidArgumentException $e) {
             $log->log($e->getMessage());
+            return InferredType::unknown();
         }
 
         $type = $property->type()->className() ?: (string) $property->type();
