@@ -64,6 +64,7 @@ final class FrameBuilder
 
         $comment = $node->getLeadingCommentAndWhitespaceText();
 
+        // TODO: Remove this duplication
         if (preg_match('{@var}', $comment)) {
             $docblock = $this->docblockParser->parse($comment);
             $tags = $docblock->tagsNamed('var');

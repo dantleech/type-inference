@@ -75,6 +75,9 @@ class TolerantTypeInferer implements TypeInferer
     {
         $comment = $node->getLeadingCommentAndWhitespaceText();
 
+        /**
+         * TODO: Duplicated in FrameBuilder
+         */
         if (preg_match('{@var}', $comment)) {
             $dockblock = $this->docblockParser->parse($comment);
 
