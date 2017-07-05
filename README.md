@@ -1,7 +1,7 @@
 Type Inference
 ==============
 
-[![Build Status](https://travis-ci.org/dantleech/type-inference.svg?branch=master)](https://travis-ci.org/dantleech/type-inference)
+[![Build Status](https://travis-ci.org/phpactor/type-inference.svg?branch=master)](https://travis-ci.org/phpactor/type-inference)
 
 Source code type inference library.
 
