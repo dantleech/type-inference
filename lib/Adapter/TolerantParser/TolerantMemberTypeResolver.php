@@ -12,7 +12,7 @@ use DTL\TypeInference\Domain\PropertyName;
 use DTL\TypeInference\Domain\SourceCodeNotFound;
 use DTL\TypeInference\Domain\MemberTypeResolver;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
-use DTL\TypeInference\Domain\DocblockParser;
+use DTL\TypeInference\Domain\Docblock\DocblockParser;
 use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
 use Microsoft\PhpParser\NamespacedNameInterface;
 use DTL\TypeInference\Domain\MessageLog;

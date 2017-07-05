@@ -14,7 +14,7 @@ use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Token;
 use Microsoft\PhpParser\Node\SourceFileNode;
 use Microsoft\PhpParser\Node\Statement\ForeachStatement;
-use DTL\TypeInference\Domain\DocblockParser;
+use DTL\TypeInference\Domain\Docblock\DocblockParser;
 
 final class FrameBuilder
 {
