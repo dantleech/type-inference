@@ -1,6 +1,6 @@
 <?php
 
-namespace DTL\TypeInference\Domain;
+namespace DTL\TypeInference\Domain\Docblock;
 
 class Docblock
 {

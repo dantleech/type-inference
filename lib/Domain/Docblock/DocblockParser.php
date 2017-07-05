@@ -1,6 +1,8 @@
 <?php
 
-namespace DTL\TypeInference\Domain;
+namespace DTL\TypeInference\Domain\Docblock;
+
+use DTL\TypeInference\Domain\Docblock\Docblock;
 
 final class DocblockParser
 {
@@ -13,9 +15,14 @@ final class DocblockParser
     {
         $tags = [];
         foreach (self::TAGS as $tag) {
-            preg_match(sprintf('{@%s (?<value>[\w\\\]+)}', $tag), $text, $matches);
+            preg_match(sprintf('{@%s (?<target>\$\w+)? ?(?<value>[\w\\\]+)}', $tag), $text, $matches);
 
             if (!$matches) {
+                continue;
+            }
+
+            if ($matches['target']) {
+                $tags[] = DocblockTag::fromNameTargetAndValue($tag, $matches['target'], $matches['value']);
                 continue;
             }
 
