@@ -14,6 +14,11 @@ final class Frame implements FrameInterface
         $this->nodes[$name] = $node;
     }
 
+    public function setTag(DocblockTagTargeted $tag)
+    {
+        $this->nodes[$tag->target()] = $tag;
+    }
+
     public function get(string $name)
     {
         return $this->nodes[$name] ?? null;

@@ -334,6 +334,17 @@ $barbar;
 EOT
                 , 69, InferredType::fromString('Bar')
             ],
+            'It returns type for a for each member (with a docblock)' => [
+                <<<'EOT'
+<?php
+
+/** @var $foobar Foobar */
+foreach ($collection as $foobar) {
+    $foobar->foobar();
+}
+EOT
+                , 75, InferredType::fromString('Bar')
+            ],
         ];
 
     }

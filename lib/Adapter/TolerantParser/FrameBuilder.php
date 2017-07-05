@@ -13,9 +13,21 @@ use Microsoft\PhpParser\Node\Expression\Variable as ExprVariable;
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Token;
 use Microsoft\PhpParser\Node\SourceFileNode;
+use Microsoft\PhpParser\Node\Statement\ForeachStatement;
+use DTL\TypeInference\Domain\DocblockParser;
 
 final class FrameBuilder
 {
+    /**
+     * @var DocblockParser
+     */
+    private $docblockParser;
+
+    public function __construct()
+    {
+        $this->docblockParser = new DocblockParser();
+    }
+
     public function buildUntil(Node $node): Frame
     {
         $frame = new Frame();
@@ -48,6 +60,22 @@ final class FrameBuilder
                 $node->leftOperand,
                 $node->rightOperand
             );
+        }
+
+        $comment = $node->getLeadingCommentAndWhitespaceText();
+
+        if (preg_match('{@var}', $comment)) {
+            $docblock = $this->docblockParser->parse($comment);
+            $tags = $docblock->tagsNamed('var');
+
+            if (!empty($tags)) {
+                foreach ($tags as $tag) {
+                    if (null === $tag->target()) {
+                        continue;
+                    }
+                    $frame->setTag($tag);
+                }
+            }
         }
 
         foreach ($node->getChildNodes() as $childNode) {

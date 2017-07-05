@@ -24,6 +24,12 @@ class DocblockParserTest extends TestCase
     {
         return [
             [
+                '/** @var $foobar Foobar */',
+                [
+                    DocblockTag::fromNameTargetAndValue('var', 'foobar', 'Foobar')
+                ]
+            ],
+            [
                 '/** @var Foobar */',
                 [
                     DocblockTag::fromNameAndValue('var', 'Foobar')
