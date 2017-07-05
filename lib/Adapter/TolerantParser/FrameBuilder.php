@@ -91,6 +91,10 @@ final class FrameBuilder
         $class = $node->getFirstAncestor(ClassDeclaration::class);
         $frame->set('$this', $class);
 
+        if (null === $node->parameters) {
+            return;
+        }
+
         foreach ($node->parameters->children as $parameter) {
             if (false === $parameter instanceof Parameter) {
                 continue;
