@@ -73,7 +73,8 @@ final class FrameBuilder
                     if (null === $tag->target()) {
                         continue;
                     }
-                    $frame->setTag($tag);
+
+                    $frame->set($tag->target(), $node);
                 }
             }
         }

@@ -22,7 +22,7 @@ final class DocblockParser
             }
 
             if ($matches['target']) {
-                $tags[] = DocblockTag::fromNameTargetAndValue($tag, ltrim($matches['target'], '$'), $matches['value']);
+                $tags[] = DocblockTag::fromNameTargetAndValue($tag, $matches['target'], $matches['value']);
                 continue;
             }
 

@@ -343,7 +343,7 @@ foreach ($collection as $foobar) {
     $foobar->foobar();
 }
 EOT
-                , 75, InferredType::fromString('Bar')
+                , 75, InferredType::fromString('Foobar')
             ],
         ];
 

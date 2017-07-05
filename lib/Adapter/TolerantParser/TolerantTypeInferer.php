@@ -27,18 +27,36 @@ use Microsoft\PhpParser\Node\Expression\ObjectCreationExpression;
 use Microsoft\PhpParser\Node\Expression\SubscriptExpression;
 use DTL\TypeInference\Domain\MessageLog;
 use DTL\TypeInference\Domain\InferredTypeResult;
+use DTL\TypeInference\Domain\Docblock\DocblockParser;
 
 class TolerantTypeInferer implements TypeInferer
 {
+    /**
+     * @var Parser
+     */
     private $parser;
+
+    /**
+     * @var MemberTypeResolver
+     */
     private $typeResolver;
+
+    /**
+     * @var FullyQualifiedNameResolver
+     */
     private $nameResolver;
+
+    /**
+     * @var DocblockParser
+     */
+    private $docblockParser;
 
     public function __construct(Parser $parser = null, MemberTypeResolver $typeResolver = null)
     {
         $this->parser = $parser ?: new Parser();
         $this->typeResolver = $typeResolver ?: new DummyMethodTypeResolver();
         $this->fqnResolver = new FullyQualifiedNameResolver();
+        $this->docblockParser = new DocblockParser();
     }
 
     public function inferTypeAtOffset(SourceCode $code, Offset $offset): InferredTypeResult
@@ -55,6 +73,16 @@ class TolerantTypeInferer implements TypeInferer
 
     public function resolveNode(MessageLog $log, Frame $frame, Node $node)
     {
+        $comment = $node->getLeadingCommentAndWhitespaceText();
+
+        if (preg_match('{@var}', $comment)) {
+            $dockblock = $this->docblockParser->parse($comment);
+
+            foreach ($dockblock->tagsNamed('var') as $tag) {
+                return $this->fqnResolver->resolveQualifiedName($node, $tag->value());
+            }
+        }
+
         if ($node instanceof QualifiedName) {
             return $this->fqnResolver->resolveQualifiedName($node);
         }
