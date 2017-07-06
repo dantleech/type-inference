@@ -42,6 +42,6 @@ EOT
             Offset::fromInt(30)
         );
         $map = $result->frame()->asDebugMap();
-        $this->assertCount(3, $map);
+        $this->assertCount(4, $map);
     }
 }

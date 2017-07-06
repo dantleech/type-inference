@@ -90,6 +90,7 @@ final class FrameBuilder
         $namespace = $node->getNamespaceDefinition();
         $class = $node->getFirstAncestor(ClassDeclaration::class);
         $frame->set('$this', $class);
+        $frame->set('self', $class);
 
         if (null === $node->parameters) {
             return;

@@ -345,6 +345,23 @@ foreach ($collection as $foobar) {
 EOT
                 , 75, InferredType::fromString('Foobar')
             ],
+            'It returns the FQN for self' => [
+                <<<'EOT'
+<?php
+
+namespace Foobar\Barfoo;
+
+class Foobar
+{
+    public function foobar(Barfoo $barfoo)
+    {
+        self::foobar();
+    }
+}
+
+EOT
+                , 106, InferredType::fromString('Foobar\Barfoo\Foobar')
+            ],
         ];
 
     }

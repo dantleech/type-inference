@@ -5,6 +5,8 @@ namespace Phpactor\TypeInference\Adapter\TolerantParser;
 use Microsoft\PhpParser\Node;
 use Phpactor\TypeInference\Domain\InferredType;
 use Microsoft\PhpParser\Node\NamespaceUseClause;
+use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
+use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 
 final class FullyQualifiedNameResolver
 {
@@ -14,6 +16,11 @@ final class FullyQualifiedNameResolver
 
         if (substr($name, 0, 1) === '\\') {
             return InferredType::fromString($name);
+        }
+
+        if ($name == 'self') {
+            $class = $node->getFirstAncestor(ClassDeclaration::class, InterfaceDeclaration::class);
+            return InferredType::fromString($class->getNamespacedName());
         }
 
         $imports = $node->getImportTablesForCurrentScope();
