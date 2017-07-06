@@ -15,17 +15,17 @@
         },
         {
             "type": "vcs",
-            "url": "https://github.com/dantleech/worse-reflection"
+            "url": "https://github.com/phpactor/worse-reflection"
         },
         {
             "type": "vcs",
-            "url": "https://github.com/dantleech/class-to-file"
+            "url": "https://github.com/phpactor/class-to-file"
         }
     ],
     "require": {
         "microsoft/tolerant-php-parser": "dev-master",
-        "dantleech/class-to-file": "dev-master",
-        "dantleech/worse-reflection": "dev-master"
+        "phpactor/class-to-file": "dev-master",
+        "phpactor/worse-reflection": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.2"
