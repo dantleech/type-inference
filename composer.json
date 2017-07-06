@@ -1,5 +1,5 @@
 {
-    "name": "dantleech/type-inference",
+    "name": "phpactor/type-inference",
     "description": "Infer types in file offsets",
     "license": "MIT",
     "authors": [
