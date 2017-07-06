@@ -1,14 +1,14 @@
 <?php
 
-namespace DTL\TypeInference\Tests\Adapter;
+namespace Phpactor\TypeInference\Tests\Adapter;
 
-use DTL\TypeInference\Adapter\TolerantParser\TolerantTypeInferer;
-use DTL\TypeInference\Domain\Offset;
-use DTL\TypeInference\Domain\InferredType;
+use Phpactor\TypeInference\Adapter\TolerantParser\TolerantTypeInferer;
+use Phpactor\TypeInference\Domain\Offset;
+use Phpactor\TypeInference\Domain\InferredType;
 use PHPUnit\Framework\TestCase;
-use DTL\TypeInference\Domain\SourceCode;
-use DTL\TypeInference\Domain\TypeInferer;
-use DTL\TypeInference\Domain\SourceCodeLoader;
+use Phpactor\TypeInference\Domain\SourceCode;
+use Phpactor\TypeInference\Domain\TypeInferer;
+use Phpactor\TypeInference\Domain\SourceCodeLoader;
 use Prophecy\Argument;
 
 abstract class TypeInferrerTestCase extends TestCase

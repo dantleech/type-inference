@@ -1,17 +1,17 @@
 <?php
 
-namespace DTL\TypeInference\Tests\Adapter\TolerantParser;
+namespace Phpactor\TypeInference\Tests\Adapter\TolerantParser;
 
-use DTL\TypeInference\Domain\TypeInferer;
-use DTL\TypeInference\Adapter\TolerantParser\TolerantTypeInferer;
-use DTL\TypeInference\Tests\Adapter\TypeInferrerTestCase;
+use Phpactor\TypeInference\Domain\TypeInferer;
+use Phpactor\TypeInference\Adapter\TolerantParser\TolerantTypeInferer;
+use Phpactor\TypeInference\Tests\Adapter\TypeInferrerTestCase;
 use PHPUnit\Framework\TestCase;
-use DTL\TypeInference\Adapter\TolerantParser\TolerantMemberTypeResolver;
-use DTL\TypeInference\Domain\SourceCodeLoader;
-use DTL\TypeInference\Domain\InferredType;
-use DTL\TypeInference\Domain\SourceCode;
-use DTL\TypeInference\Domain\MethodName;
-use DTL\TypeInference\Domain\SourceCodeNotFound;
+use Phpactor\TypeInference\Adapter\TolerantParser\TolerantMemberTypeResolver;
+use Phpactor\TypeInference\Domain\SourceCodeLoader;
+use Phpactor\TypeInference\Domain\InferredType;
+use Phpactor\TypeInference\Domain\SourceCode;
+use Phpactor\TypeInference\Domain\MethodName;
+use Phpactor\TypeInference\Domain\SourceCodeNotFound;
 
 class TolerantMemberTypeInfererTest extends TestCase
 {

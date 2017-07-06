@@ -1,13 +1,13 @@
 <?php
 
-namespace DTL\TypeInference\Adapter\Dummy;
+namespace Phpactor\TypeInference\Adapter\Dummy;
 
-use DTL\TypeInference\Domain\MemberTypeResolver;
-use DTL\TypeInference\Domain\InferredType;
-use DTL\TypeInference\Domain\SourceCode;
-use DTL\TypeInference\Domain\SourceCodeNotFound;
-use DTL\TypeInference\Domain\MethodName;
-use DTL\TypeInference\Domain\MessageLog;
+use Phpactor\TypeInference\Domain\MemberTypeResolver;
+use Phpactor\TypeInference\Domain\InferredType;
+use Phpactor\TypeInference\Domain\SourceCode;
+use Phpactor\TypeInference\Domain\SourceCodeNotFound;
+use Phpactor\TypeInference\Domain\MethodName;
+use Phpactor\TypeInference\Domain\MessageLog;
 
 class DummyMethodTypeResolver implements MemberTypeResolver
 {

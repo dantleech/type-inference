@@ -1,12 +1,12 @@
 <?php
 
-namespace DTL\TypeInference\Tests\Adapter\ClassToFile;
+namespace Phpactor\TypeInference\Tests\Adapter\ClassToFile;
 
 use PHPUnit\Framework\TestCase;
-use DTL\TypeInference\Adapter\ClassToFile\ClassToFileSourceCodeLoader;
-use DTL\ClassFileConverter\Adapter\Composer\ComposerClassToFile;
-use DTL\ClassFileConverter\ClassToFileConverter;
-use DTL\TypeInference\Domain\InferredType;
+use Phpactor\TypeInference\Adapter\ClassToFile\ClassToFileSourceCodeLoader;
+use Phpactor\ClassFileConverter\Adapter\Composer\ComposerClassToFile;
+use Phpactor\ClassFileConverter\ClassToFileConverter;
+use Phpactor\TypeInference\Domain\InferredType;
 
 class ClassToFileSourceCodeLoaderTest extends TestCase
 {

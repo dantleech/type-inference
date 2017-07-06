@@ -1,9 +1,9 @@
 <?php
 
-namespace DTL\TypeInference\Adapter\TolerantParser;
+namespace Phpactor\TypeInference\Adapter\TolerantParser;
 
 use Microsoft\PhpParser\Node;
-use DTL\TypeInference\Domain\InferredType;
+use Phpactor\TypeInference\Domain\InferredType;
 use Microsoft\PhpParser\Node\NamespaceUseClause;
 
 final class FullyQualifiedNameResolver

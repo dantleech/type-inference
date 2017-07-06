@@ -1,9 +1,9 @@
 <?php
 
-namespace DTL\TypeInference\Adapter\TolerantParser;
+namespace Phpactor\TypeInference\Adapter\TolerantParser;
 
 use Microsoft\PhpParser\Node;
-use DTL\TypeInference\Domain\Frame as FrameInterface;
+use Phpactor\TypeInference\Domain\Frame as FrameInterface;
 
 final class Frame implements FrameInterface
 {

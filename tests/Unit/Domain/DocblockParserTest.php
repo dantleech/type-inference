@@ -1,11 +1,11 @@
 <?php
 
-namespace DTL\TypeInference\Tests\Unit\Domain;
+namespace Phpactor\TypeInference\Tests\Unit\Domain;
 
 use PHPUnit\Framework\TestCase;
-use DTL\TypeInference\Domain\Docblock\DocblockParser;
-use DTL\TypeInference\Domain\Docblock\Docblock;
-use DTL\TypeInference\Domain\Docblock\DocblockTag;
+use Phpactor\TypeInference\Domain\Docblock\DocblockParser;
+use Phpactor\TypeInference\Domain\Docblock\Docblock;
+use Phpactor\TypeInference\Domain\Docblock\DocblockTag;
 
 class DocblockParserTest extends TestCase
 {

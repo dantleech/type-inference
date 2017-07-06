@@ -1,10 +1,10 @@
 <?php
 
-namespace DTL\TypeInference\Tests\Adapter\TolerantParser;
+namespace Phpactor\TypeInference\Tests\Adapter\TolerantParser;
 
-use DTL\TypeInference\Adapter\TolerantParser\TolerantMemberTypeResolver;
-use DTL\TypeInference\Domain\MemberTypeResolver;
-use DTL\TypeInference\Tests\Adapter\MemberTypeResolverTestCase;
+use Phpactor\TypeInference\Adapter\TolerantParser\TolerantMemberTypeResolver;
+use Phpactor\TypeInference\Domain\MemberTypeResolver;
+use Phpactor\TypeInference\Tests\Adapter\MemberTypeResolverTestCase;
 
 class TolerantMemberTypeResolverTest extends MemberTypeResolverTestCase
 {

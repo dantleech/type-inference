@@ -1,8 +1,8 @@
 <?php
 
-namespace DTL\TypeInference\Domain\Docblock;
+namespace Phpactor\TypeInference\Domain\Docblock;
 
-use DTL\TypeInference\Domain\Docblock\Docblock;
+use Phpactor\TypeInference\Domain\Docblock\Docblock;
 
 final class DocblockParser
 {

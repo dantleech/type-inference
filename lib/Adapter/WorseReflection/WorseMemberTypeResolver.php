@@ -1,16 +1,16 @@
 <?php
 
-namespace DTL\TypeInference\Adapter\WorseReflection;
+namespace Phpactor\TypeInference\Adapter\WorseReflection;
 
-use DTL\WorseReflection\ClassName;
-use DTL\TypeInference\Domain\MemberTypeResolver;
-use DTL\TypeInference\Domain\InferredType;
-use DTL\TypeInference\Domain\MethodName;
-use DTL\WorseReflection\Reflector;
-use DTL\TypeInference\Domain\SourceCodeNotFound;
-use DTL\WorseReflection\Exception\ClassNotFound;
-use DTL\WorseReflection\Reflection\ReflectionClass;
-use DTL\TypeInference\Domain\MessageLog;
+use Phpactor\WorseReflection\ClassName;
+use Phpactor\TypeInference\Domain\MemberTypeResolver;
+use Phpactor\TypeInference\Domain\InferredType;
+use Phpactor\TypeInference\Domain\MethodName;
+use Phpactor\WorseReflection\Reflector;
+use Phpactor\TypeInference\Domain\SourceCodeNotFound;
+use Phpactor\WorseReflection\Exception\ClassNotFound;
+use Phpactor\WorseReflection\Reflection\ReflectionClass;
+use Phpactor\TypeInference\Domain\MessageLog;
 
 final class WorseMemberTypeResolver implements MemberTypeResolver
 {

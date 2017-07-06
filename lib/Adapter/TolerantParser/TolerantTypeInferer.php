@@ -1,12 +1,12 @@
 <?php
 
-namespace DTL\TypeInference\Adapter\TolerantParser;
+namespace Phpactor\TypeInference\Adapter\TolerantParser;
 
 use Microsoft\PhpParser\Parser;
-use DTL\TypeInference\Domain\TypeInferer;
-use DTL\TypeInference\Domain\SourceCode;
-use DTL\TypeInference\Domain\Offset;
-use DTL\TypeInference\Domain\InferredType;
+use Phpactor\TypeInference\Domain\TypeInferer;
+use Phpactor\TypeInference\Domain\SourceCode;
+use Phpactor\TypeInference\Domain\Offset;
+use Phpactor\TypeInference\Domain\InferredType;
 use Microsoft\PhpParser\Node\QualifiedName;
 use Microsoft\PhpParser\Node\NamespaceUseClause;
 use Microsoft\PhpParser\Node;
@@ -14,20 +14,20 @@ use Microsoft\PhpParser\Node\Parameter;
 use Microsoft\PhpParser\Node\Expression\Variable;
 use Microsoft\PhpParser\Node\Statement\FunctionDeclaration;
 use Microsoft\PhpParser\Node\MethodDeclaration;
-use DTL\TypeInference\Adapter\TolerantParser\FrameBuilder;
-use DTL\TypeInference\Domain\MemberTypeResolver;
+use Phpactor\TypeInference\Adapter\TolerantParser\FrameBuilder;
+use Phpactor\TypeInference\Domain\MemberTypeResolver;
 use Microsoft\PhpParser\Node\Expression\MemberAccessExpression;
-use DTL\TypeInference\Domain\MethodName;
-use DTL\TypeInference\Adapter\Dummy\DummyMethodTypeResolver;
+use Phpactor\TypeInference\Domain\MethodName;
+use Phpactor\TypeInference\Adapter\Dummy\DummyMethodTypeResolver;
 use Microsoft\PhpParser\Node\Expression\CallExpression;
 use Microsoft\PhpParser\Node\Expression;
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
 use Microsoft\PhpParser\Node\Expression\ObjectCreationExpression;
 use Microsoft\PhpParser\Node\Expression\SubscriptExpression;
-use DTL\TypeInference\Domain\MessageLog;
-use DTL\TypeInference\Domain\InferredTypeResult;
-use DTL\TypeInference\Domain\Docblock\DocblockParser;
+use Phpactor\TypeInference\Domain\MessageLog;
+use Phpactor\TypeInference\Domain\InferredTypeResult;
+use Phpactor\TypeInference\Domain\Docblock\DocblockParser;
 
 class TolerantTypeInferer implements TypeInferer
 {

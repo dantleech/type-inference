@@ -1,17 +1,17 @@
 <?php
 
-namespace DTL\TypeInference\Tests\Adapter;
+namespace Phpactor\TypeInference\Tests\Adapter;
 
-use DTL\TypeInference\Domain\TypeInferer;
-use DTL\TypeInference\Tests\Adapter\TypeInferrerTestCase;
+use Phpactor\TypeInference\Domain\TypeInferer;
+use Phpactor\TypeInference\Tests\Adapter\TypeInferrerTestCase;
 use PHPUnit\Framework\TestCase;
-use DTL\TypeInference\Domain\SourceCodeLoader;
-use DTL\TypeInference\Domain\InferredType;
-use DTL\TypeInference\Domain\SourceCode;
-use DTL\TypeInference\Domain\MethodName;
-use DTL\TypeInference\Domain\SourceCodeNotFound;
-use DTL\TypeInference\Domain\MemberTypeResolver;
-use DTL\TypeInference\Domain\MessageLog;
+use Phpactor\TypeInference\Domain\SourceCodeLoader;
+use Phpactor\TypeInference\Domain\InferredType;
+use Phpactor\TypeInference\Domain\SourceCode;
+use Phpactor\TypeInference\Domain\MethodName;
+use Phpactor\TypeInference\Domain\SourceCodeNotFound;
+use Phpactor\TypeInference\Domain\MemberTypeResolver;
+use Phpactor\TypeInference\Domain\MessageLog;
 
 abstract class MemberTypeResolverTestCase extends TestCase
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace DTL\TypeInference\Adapter\WorseReflection;
+namespace Phpactor\TypeInference\Adapter\WorseReflection;
 
-use DTL\WorseReflection\SourceCodeLocator;
-use DTL\WorseReflection\SourceCode;
-use DTL\TypeInference\Domain\InferredType;
-use DTL\WorseReflection\ClassName;
-use DTL\TypeInference\Domain\SourceCodeLoader;
+use Phpactor\WorseReflection\SourceCodeLocator;
+use Phpactor\WorseReflection\SourceCode;
+use Phpactor\TypeInference\Domain\InferredType;
+use Phpactor\WorseReflection\ClassName;
+use Phpactor\TypeInference\Domain\SourceCodeLoader;
 
 class WorseSourceCodeLocator implements SourceCodeLocator
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace DTL\TypeInference\Tests\Adapter\TolerantParser;
+namespace Phpactor\TypeInference\Tests\Adapter\TolerantParser;
 
-use DTL\TypeInference\Adapter\TolerantParser\TolerantMemberTypeResolver;
-use DTL\TypeInference\Domain\MemberTypeResolver;
-use DTL\TypeInference\Tests\Adapter\MemberTypeResolverTestCase;
-use DTL\TypeInference\Adapter\WorseReflection\WorseMemberTypeResolver;
-use DTL\TypeInference\Adapter\WorseReflection\WorseSourceCodeLocator;
-use DTL\WorseReflection\Reflector;
+use Phpactor\TypeInference\Adapter\TolerantParser\TolerantMemberTypeResolver;
+use Phpactor\TypeInference\Domain\MemberTypeResolver;
+use Phpactor\TypeInference\Tests\Adapter\MemberTypeResolverTestCase;
+use Phpactor\TypeInference\Adapter\WorseReflection\WorseMemberTypeResolver;
+use Phpactor\TypeInference\Adapter\WorseReflection\WorseSourceCodeLocator;
+use Phpactor\WorseReflection\Reflector;
 
 class WorseMemberTypeResolverTest extends MemberTypeResolverTestCase
 {

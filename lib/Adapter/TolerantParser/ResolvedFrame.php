@@ -1,12 +1,12 @@
 <?php
 
-namespace DTL\TypeInference\Adapter\TolerantParser;
+namespace Phpactor\TypeInference\Adapter\TolerantParser;
 
-use DTL\TypeInference\Adapter\TolerantParser\Frame as TolerantFrame;
-use DTL\TypeInference\Domain\Frame as FrameInterface;
-use DTL\TypeInference\Domain\MessageLog;
-use DTL\TypeInference\Domain\SourceCode;
-use DTL\TypeInference\Domain\Offset;
+use Phpactor\TypeInference\Adapter\TolerantParser\Frame as TolerantFrame;
+use Phpactor\TypeInference\Domain\Frame as FrameInterface;
+use Phpactor\TypeInference\Domain\MessageLog;
+use Phpactor\TypeInference\Domain\SourceCode;
+use Phpactor\TypeInference\Domain\Offset;
 
 class ResolvedFrame implements FrameInterface
 {

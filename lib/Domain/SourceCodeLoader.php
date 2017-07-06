@@ -1,9 +1,9 @@
 <?php
 
-namespace DTL\TypeInference\Domain;
+namespace Phpactor\TypeInference\Domain;
 
-use DTL\TypeInference\Domain\InferredType;
-use DTL\TypeInference\Domain\SourceCode;
+use Phpactor\TypeInference\Domain\InferredType;
+use Phpactor\TypeInference\Domain\SourceCode;
 
 interface SourceCodeLoader
 {

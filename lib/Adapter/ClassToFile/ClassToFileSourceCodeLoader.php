@@ -1,16 +1,16 @@
 <?php
 
-namespace DTL\TypeInference\Adapter\ClassToFile;
+namespace Phpactor\TypeInference\Adapter\ClassToFile;
 
-use DTL\TypeInference\Domain\SourceCodeLoader;
-use DTL\TypeInference\Domain\InferredType;
-use DTL\TypeInference\Domain\MethodName;
-use DTL\ClassFileConverter\Domain\ClassToFile;
-use DTL\ClassFileConverter\ClassToFileConverter;
-use DTL\TypeInference\Domain\SourcePath;
-use DTL\TypeInference\Domain\SourceCode;
-use DTL\ClassFileConverter\Domain\ClassName;
-use DTL\TypeInference\Domain\SourceCodeNotFound;
+use Phpactor\TypeInference\Domain\SourceCodeLoader;
+use Phpactor\TypeInference\Domain\InferredType;
+use Phpactor\TypeInference\Domain\MethodName;
+use Phpactor\ClassFileConverter\Domain\ClassToFile;
+use Phpactor\ClassFileConverter\ClassToFileConverter;
+use Phpactor\TypeInference\Domain\SourcePath;
+use Phpactor\TypeInference\Domain\SourceCode;
+use Phpactor\ClassFileConverter\Domain\ClassName;
+use Phpactor\TypeInference\Domain\SourceCodeNotFound;
 
 class ClassToFileSourceCodeLoader implements SourceCodeLoader
 {

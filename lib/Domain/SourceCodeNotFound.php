@@ -1,6 +1,6 @@
 <?php
 
-namespace DTL\TypeInference\Domain;
+namespace Phpactor\TypeInference\Domain;
 
 class SourceCodeNotFound extends \DomainException
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace DTL\TypeInference\Adapter\TolerantParser;
+namespace Phpactor\TypeInference\Adapter\TolerantParser;
 
 use Microsoft\PhpParser\Node;
 use Microsoft\PhpParser\Node\MethodDeclaration;
 use Microsoft\PhpParser\Node\Statement\FunctionDeclaration;
-use DTL\TypeInference\Domain\Variable;
-use DTL\TypeInference\Domain\InferredType;
+use Phpactor\TypeInference\Domain\Variable;
+use Phpactor\TypeInference\Domain\InferredType;
 use Microsoft\PhpParser\Node\Parameter;
 use Microsoft\PhpParser\Node\Expression\AssignmentExpression;
 use Microsoft\PhpParser\Node\Expression\Variable as ExprVariable;
@@ -14,7 +14,7 @@ use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Token;
 use Microsoft\PhpParser\Node\SourceFileNode;
 use Microsoft\PhpParser\Node\Statement\ForeachStatement;
-use DTL\TypeInference\Domain\Docblock\DocblockParser;
+use Phpactor\TypeInference\Domain\Docblock\DocblockParser;
 
 final class FrameBuilder
 {

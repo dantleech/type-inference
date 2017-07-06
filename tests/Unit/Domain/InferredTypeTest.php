@@ -1,9 +1,9 @@
 <?php
 
-namespace DTL\TypeInference\Tests\Unit\Domain;
+namespace Phpactor\TypeInference\Tests\Unit\Domain;
 
 use PHPUnit\Framework\TestCase;
-use DTL\TypeInference\Domain\InferredType;
+use Phpactor\TypeInference\Domain\InferredType;
 
 class InferredTypeTest extends TestCase
 {

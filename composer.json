@@ -32,12 +32,12 @@
     },
     "autoload": {
         "psr-4": {
-            "DTL\\TypeInference\\": "lib/"
+            "Phpactor\\TypeInference\\": "lib/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "DTL\\TypeInference\\Tests\\": "tests/"
+            "Phpactor\\TypeInference\\Tests\\": "tests/"
         }
     },
     "extra": {

@@ -1,21 +1,21 @@
 <?php
 
-namespace DTL\TypeInference\Adapter\TolerantParser;
+namespace Phpactor\TypeInference\Adapter\TolerantParser;
 
 use Microsoft\PhpParser\Parser;
-use DTL\TypeInference\Domain\InferredType;
-use DTL\TypeInference\Domain\SourceCodeLoader;
-use DTL\TypeInference\Domain\MethodName;
+use Phpactor\TypeInference\Domain\InferredType;
+use Phpactor\TypeInference\Domain\SourceCodeLoader;
+use Phpactor\TypeInference\Domain\MethodName;
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Node\MethodDeclaration;
-use DTL\TypeInference\Domain\PropertyName;
-use DTL\TypeInference\Domain\SourceCodeNotFound;
-use DTL\TypeInference\Domain\MemberTypeResolver;
+use Phpactor\TypeInference\Domain\PropertyName;
+use Phpactor\TypeInference\Domain\SourceCodeNotFound;
+use Phpactor\TypeInference\Domain\MemberTypeResolver;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
-use DTL\TypeInference\Domain\Docblock\DocblockParser;
+use Phpactor\TypeInference\Domain\Docblock\DocblockParser;
 use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
 use Microsoft\PhpParser\NamespacedNameInterface;
-use DTL\TypeInference\Domain\MessageLog;
+use Phpactor\TypeInference\Domain\MessageLog;
 
 final class TolerantMemberTypeResolver implements MemberTypeResolver
 {
