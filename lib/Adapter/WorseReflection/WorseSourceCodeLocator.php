@@ -7,6 +7,8 @@ use Phpactor\WorseReflection\SourceCode;
 use Phpactor\TypeInference\Domain\InferredType;
 use Phpactor\WorseReflection\ClassName;
 use Phpactor\TypeInference\Domain\SourceCodeLoader;
+use Phpactor\TypeInference\Domain\SourceCodeNotFound;
+use Phpactor\WorseReflection\Exception\SourceNotFound;
 
 class WorseSourceCodeLocator implements SourceCodeLocator
 {
@@ -17,9 +19,14 @@ class WorseSourceCodeLocator implements SourceCodeLocator
         $this->loader = $loader;
     }
 
-
     public function locate(ClassName $className): SourceCode
     {
-        return SourceCode::fromString($this->loader->loadSourceFor(InferredType::fromString((string) $className)));
+        try {
+            return SourceCode::fromString(
+                $this->loader->loadSourceFor(InferredType::fromString((string) $className))
+            );
+        } catch (SourceCodeNotFound $e) {
+            throw new SourceNotFound($e->getMessage(), null, $e);
+        }
     }
 }

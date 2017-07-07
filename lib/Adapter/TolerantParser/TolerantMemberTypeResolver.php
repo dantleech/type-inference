@@ -8,7 +8,6 @@ use Phpactor\TypeInference\Domain\SourceCodeLoader;
 use Phpactor\TypeInference\Domain\MethodName;
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Node\MethodDeclaration;
-use Phpactor\TypeInference\Domain\PropertyName;
 use Phpactor\TypeInference\Domain\SourceCodeNotFound;
 use Phpactor\TypeInference\Domain\MemberTypeResolver;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
@@ -29,8 +28,7 @@ final class TolerantMemberTypeResolver implements MemberTypeResolver
         Parser $parser = null,
         DocblockParser $docblockParser = null,
         FullyQualifiedNameResolver $resolver = null
-    )
-    {
+    ) {
         $this->parser = $parser ?: new Parser();
         $this->docblockParser = $docblockParser ?: new DocblockParser();
         $this->fqnResolver = $resolver ?: new FullyQualifiedNameResolver();
@@ -56,6 +54,7 @@ final class TolerantMemberTypeResolver implements MemberTypeResolver
 
                     return InferredType::unknown();
                 }
+
                 return InferredType::fromString($node->returnType->getResolvedName());
             },
             'get_name' => function ($node) {
@@ -97,6 +96,7 @@ final class TolerantMemberTypeResolver implements MemberTypeResolver
             $sourceCode = $this->sourceLoader->loadSourceFor($type);
         } catch (SourceCodeNotFound $e) {
             $log->log($e->getMessage());
+
             return InferredType::unknown();
         }
 
@@ -126,7 +126,6 @@ final class TolerantMemberTypeResolver implements MemberTypeResolver
                     return $strategy['resolver']($descendant);
                 }
             }
-
         }
 
         return InferredType::unknown();

@@ -8,13 +8,9 @@ use Phpactor\TypeInference\Domain\SourceCode;
 use Phpactor\TypeInference\Domain\Offset;
 use Phpactor\TypeInference\Domain\InferredType;
 use Microsoft\PhpParser\Node\QualifiedName;
-use Microsoft\PhpParser\Node\NamespaceUseClause;
 use Microsoft\PhpParser\Node;
 use Microsoft\PhpParser\Node\Parameter;
 use Microsoft\PhpParser\Node\Expression\Variable;
-use Microsoft\PhpParser\Node\Statement\FunctionDeclaration;
-use Microsoft\PhpParser\Node\MethodDeclaration;
-use Phpactor\TypeInference\Adapter\TolerantParser\FrameBuilder;
 use Phpactor\TypeInference\Domain\MemberTypeResolver;
 use Microsoft\PhpParser\Node\Expression\MemberAccessExpression;
 use Phpactor\TypeInference\Domain\MethodName;
@@ -75,7 +71,7 @@ class TolerantTypeInferer implements TypeInferer
     {
         $comment = $node->getLeadingCommentAndWhitespaceText();
 
-        /**
+        /*
          * TODO: Duplicated in FrameBuilder
          */
         if (preg_match('{@var}', $comment)) {
@@ -120,7 +116,6 @@ class TolerantTypeInferer implements TypeInferer
 
         return InferredType::unknown();
     }
-
 
     private function resolveVariable(MessageLog $log, Frame $frame, string $name)
     {

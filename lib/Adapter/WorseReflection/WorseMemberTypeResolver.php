@@ -11,6 +11,7 @@ use Phpactor\TypeInference\Domain\SourceCodeNotFound;
 use Phpactor\WorseReflection\Exception\ClassNotFound;
 use Phpactor\WorseReflection\Reflection\ReflectionClass;
 use Phpactor\TypeInference\Domain\MessageLog;
+use Phpactor\WorseReflection\Exception\SourceNotFound;
 
 final class WorseMemberTypeResolver implements MemberTypeResolver
 {
@@ -18,8 +19,7 @@ final class WorseMemberTypeResolver implements MemberTypeResolver
 
     public function __construct(
         Reflector $reflector = null
-    )
-    {
+    ) {
         $this->reflector = $reflector;
     }
 
@@ -27,11 +27,13 @@ final class WorseMemberTypeResolver implements MemberTypeResolver
     {
         try {
             $class = $this->reflector->reflectClass(ClassName::fromString((string) $type));
-        } catch (SourceCodeNotFound $e) {
+        } catch (SourceNotFound $e) {
             $log->log($e->getMessage());
+
             return InferredType::unknown();
         } catch (ClassNotFound $e) {
             $log->log($e->getMessage());
+
             return InferredType::unknown();
         }
 
@@ -39,6 +41,7 @@ final class WorseMemberTypeResolver implements MemberTypeResolver
             $method = $class->methods()->get((string) $name);
         } catch (\InvalidArgumentException $e) {
             $log->log($e->getMessage());
+
             return InferredType::unknown();
         }
 
@@ -53,9 +56,11 @@ final class WorseMemberTypeResolver implements MemberTypeResolver
             $class = $this->reflector->reflectClass(ClassName::fromString((string) $type));
         } catch (SourceCodeNotFound $e) {
             $log->log($e->getMessage());
+
             return InferredType::unknown();
         } catch (ClassNotFound $e) {
             $log->log($e->getMessage());
+
             return InferredType::unknown();
         }
 
@@ -67,6 +72,7 @@ final class WorseMemberTypeResolver implements MemberTypeResolver
             $property = $class->properties()->get((string) $name);
         } catch (\InvalidArgumentException $e) {
             $log->log($e->getMessage());
+
             return InferredType::unknown();
         }
 

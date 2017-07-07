@@ -4,10 +4,7 @@ namespace Phpactor\TypeInference\Adapter\ClassToFile;
 
 use Phpactor\TypeInference\Domain\SourceCodeLoader;
 use Phpactor\TypeInference\Domain\InferredType;
-use Phpactor\TypeInference\Domain\MethodName;
 use Phpactor\ClassFileConverter\Domain\ClassToFile;
-use Phpactor\ClassFileConverter\ClassToFileConverter;
-use Phpactor\TypeInference\Domain\SourcePath;
 use Phpactor\TypeInference\Domain\SourceCode;
 use Phpactor\ClassFileConverter\Domain\ClassName;
 use Phpactor\TypeInference\Domain\SourceCodeNotFound;

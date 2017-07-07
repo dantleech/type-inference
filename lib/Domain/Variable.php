@@ -27,5 +27,4 @@ final class Variable
     {
         return $this->type;
     }
-
 }

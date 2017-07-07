@@ -5,8 +5,6 @@ namespace Phpactor\TypeInference\Adapter\TolerantParser;
 use Phpactor\TypeInference\Adapter\TolerantParser\Frame as TolerantFrame;
 use Phpactor\TypeInference\Domain\Frame as FrameInterface;
 use Phpactor\TypeInference\Domain\MessageLog;
-use Phpactor\TypeInference\Domain\SourceCode;
-use Phpactor\TypeInference\Domain\Offset;
 
 class ResolvedFrame implements FrameInterface
 {

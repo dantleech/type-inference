@@ -20,6 +20,7 @@ final class FullyQualifiedNameResolver
 
         if ($name == 'self') {
             $class = $node->getFirstAncestor(ClassDeclaration::class, InterfaceDeclaration::class);
+
             return InferredType::fromString($class->getNamespacedName());
         }
 

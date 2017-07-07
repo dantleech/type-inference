@@ -10,8 +10,7 @@ final class InferredTypeResult
 
     private function __construct(
         InferredType $type, Frame $frame, MessageLog $log
-    )
-    {
+    ) {
         $this->type = $type;
         $this->frame = $frame;
         $this->log = $log;

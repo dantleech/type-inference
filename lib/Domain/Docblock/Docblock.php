@@ -13,7 +13,6 @@ class Docblock
         }
     }
 
-
     public static function fromTags(array $tags)
     {
         return new self($tags);

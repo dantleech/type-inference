@@ -2,6 +2,7 @@
     "name": "phpactor/type-inference",
     "description": "Infer types in file offsets",
     "license": "MIT",
+    "minimum-stability": "dev",
     "authors": [
         {
             "name": "Daniel Leech",

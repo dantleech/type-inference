@@ -2,8 +2,6 @@
 
 namespace Phpactor\TypeInference\Domain\Docblock;
 
-use Phpactor\TypeInference\Domain\Docblock\Docblock;
-
 final class DocblockParser
 {
     const TAGS = [
