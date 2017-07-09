@@ -24,6 +24,8 @@ class TolerantTypeInfererTest extends TypeInferrerTestCase
 
 namespace Acme;
 
+$var = 1;
+
 use Far\Bar\Hello;
 
 class Foobar
@@ -39,9 +41,9 @@ EOT
         $messageLog = new MessageLog();
         $result = $this->inferrer()->inferTypeAtOffset(
             SourceCode::fromString($source),
-            Offset::fromInt(30)
+            Offset::fromInt(40)
         );
         $map = $result->frame()->asDebugMap();
-        $this->assertCount(4, $map);
+        $this->assertCount(1, $map);
     }
 }
