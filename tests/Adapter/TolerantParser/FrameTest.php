@@ -18,11 +18,13 @@ class FrameTest extends TestCase
     public function testDebugMap()
     {
         $parser = new Parser();
-        $node = $parser->parseSourceFile('<?php $foobar = new \Foobar(); $barfoo = $foobarl $hello = "string";');
+        $node = $parser->parseSourceFile('<?php $foobar = new \Foobar(); $barfoo = $foobar; $hello = "string"; $end = true');
         $node = $node->getDescendantNodeAtPosition(58);
         $frame = (new FrameBuilder())->buildUntil($node);
 
         $map = $frame->asDebugMap();
-        $this->assertCount(3, $map);
+        $this->assertArrayHasKey('$foobar', $map);
+        $this->assertArrayHasKey('$barfoo', $map);
+        $this->assertArrayNotHasKey('$end', $map);
     }
 }

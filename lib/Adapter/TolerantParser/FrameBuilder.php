@@ -30,7 +30,7 @@ final class FrameBuilder
             return $frame;
         }
 
-        $this->walk($frame, $start);
+        $this->walk($frame, $start, $node);
 
         return $frame;
     }
@@ -44,7 +44,7 @@ final class FrameBuilder
         );
     }
 
-    private function walk(Frame $frame, Node $node)
+    private function walk(Frame $frame, Node $node, Node $until)
     {
         if ($node instanceof MethodDeclaration) {
             $this->processMethodDeclaration($frame, $node);
@@ -75,8 +75,14 @@ final class FrameBuilder
             }
         }
 
+        if ($node === $until) {
+            return false;
+        }
+
         foreach ($node->getChildNodes() as $childNode) {
-            $this->walk($frame, $childNode);
+            if (false === $this->walk($frame, $childNode, $until)) {
+                return false;
+            }
         }
     }
 
