@@ -10,6 +10,7 @@ use Microsoft\PhpParser\Node\Expression\AssignmentExpression;
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Node\SourceFileNode;
 use Phpactor\TypeInference\Domain\Docblock\DocblockParser;
+use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
 
 final class FrameBuilder
 {
@@ -89,7 +90,7 @@ final class FrameBuilder
     private function processMethodDeclaration(Frame $frame, MethodDeclaration $node)
     {
         $namespace = $node->getNamespaceDefinition();
-        $class = $node->getFirstAncestor(ClassDeclaration::class);
+        $class = $node->getFirstAncestor(ClassDeclaration::class, InterfaceDeclaration::class);
         $frame->set('$this', $class);
         $frame->set('self', $class);
 

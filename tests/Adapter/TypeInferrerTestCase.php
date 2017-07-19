@@ -107,6 +107,22 @@ class Foobar
 EOT
                 , 77, InferredType::fromString('Foobar\Barfoo\Barfoo')
             ],
+            'It returns the FQN of a method parameter in an interface' => [
+                <<<'EOT'
+<?php
+
+namespace Foobar\Barfoo;
+
+use Acme\Factory;
+
+interface Foobar
+{
+    public function hello(World $world);
+}
+
+EOT
+                , 102, InferredType::fromString('Foobar\Barfoo\World')
+            ],
             'It returns the FQN of a static call' => [
                 <<<'EOT'
 <?php
