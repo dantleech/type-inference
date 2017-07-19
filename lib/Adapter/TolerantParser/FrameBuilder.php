@@ -11,6 +11,7 @@ use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Node\SourceFileNode;
 use Phpactor\TypeInference\Domain\Docblock\DocblockParser;
 use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
+use Microsoft\PhpParser\Node\Statement\TraitDeclaration;
 
 final class FrameBuilder
 {
@@ -90,7 +91,12 @@ final class FrameBuilder
     private function processMethodDeclaration(Frame $frame, MethodDeclaration $node)
     {
         $namespace = $node->getNamespaceDefinition();
-        $class = $node->getFirstAncestor(ClassDeclaration::class, InterfaceDeclaration::class);
+        $class = $node->getFirstAncestor(
+            ClassDeclaration::class,
+            InterfaceDeclaration::class,
+            TraitDeclaration::class
+        );
+
         $frame->set('$this', $class);
         $frame->set('self', $class);
 
