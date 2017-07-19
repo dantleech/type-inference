@@ -45,7 +45,7 @@ final class WorseMemberTypeResolver implements MemberTypeResolver
             return InferredType::unknown();
         }
 
-        $type = $method->type()->className() ?: (string) $method->type();
+        $type = $method->inferredReturnType()->className() ?: (string) $method->inferredReturnType();
 
         return InferredType::fromString($type);
     }
